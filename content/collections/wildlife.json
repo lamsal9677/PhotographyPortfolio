@@ -18,6 +18,11 @@
       "highlight": false
     },
     {
+      "image": "/media/fawn.jpg",
+      "alt": "A Fawn Eating - Golden Hour",
+      "highlight": false
+    },
+    {
       "image": "/media/wildlife-03.webp",
       "alt": "Close portrait of a fox through soft foreground branches",
       "highlight": true
@@ -35,11 +40,6 @@
     {
       "image": "/media/wildlife-06.webp",
       "alt": "An adult monkey carrying a baby beside a green path",
-      "highlight": false
-    },
-    {
-      "image": "/media/fawn.jpg",
-      "alt": "A Fawn Eating - Golden Hour",
       "highlight": false
     },
     {

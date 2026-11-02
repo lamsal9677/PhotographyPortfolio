@@ -55,7 +55,8 @@ def read_entries(folder, include_drafts=False):
     return entries
 
 def e(value):
-    return html.escape(str(value), quote=True)
+    value = str(value).replace('—','-').replace('–','-').replace(' -- ',' - ')
+    return html.escape(value, quote=True)
 
 def paragraphs(value):
     # Plain-text story paragraphs deliberately never execute embedded HTML.
@@ -258,9 +259,7 @@ def build(destination, include_drafts=False):
             albums['Selected']['featured'][categories.index(cat)] = choices[0]
     events = ''.join(button(albums[k]['cover'], k, albums[k]['title'], f'<h3>{e(albums[k]["title"])}</h3><div class="image-caption"><b>{len(albums[k]["featured"])} highlights</b><span>{len(albums[k]["all"])} photographs</span></div>') for k in event_keys)
     tabs = ''.join(f'<button class="{("active" if i == 0 else "")}" aria-pressed="{str(i == 0).lower()}" data-category="{e(cat)}">{e(cat)}</button>' for i, cat in enumerate(['Selected'] + categories))
-    cards = ''.join(f'<a class="story-card" href="{s["url"]}">{img(s["coverId"])}<div class="story-meta">{e(s.get("category", "Field notes"))}</div><h3>{e(s["title"])}</h3><p>{e(s.get("summary", ""))}</p></a>' for s in story_records)
-    story_section = '<section id="stories"><div class="sectionhead"><h2>Stories behind the photographs</h2><a href="stories/">All stories</a></div><div class="story-grid">'+cards+'</div></section>' if cards else ''
-    all_ids = list(images)
+    all_ids = sorted(images, key=lambda id: 0 if images[id]['category']=='People & events' else 1)
     albums['All'] = {'title':'All photographs','kind':'all','type':'The complete portfolio','description':'Browse every published photograph.','all':all_ids,'featured':all_ids}
     dataset = json.dumps({'slides': slides, 'albums': albums, 'sizes': sizes, 'descriptions': descriptions, 'images': images, 'settings': settings}, ensure_ascii=False).replace('<', chr(92)+'u003c').replace(chr(0x2028), chr(92)+'u2028').replace(chr(0x2029), chr(92)+'u2029')
     first = next(iter(images), None)
@@ -273,10 +272,20 @@ def build(destination, include_drafts=False):
         return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+icon_paths[name]+'</svg>'
     social_icons = ''.join('<a class="social-icon" href="'+e(href)+'" aria-label="'+label+'" title="'+label+'"'+(' target="_blank" rel="noopener"' if name != 'email' else '')+'>'+icon(name)+'</a>' for name,label,href in [('instagram','Instagram',settings['instagram']),('facebook','Facebook',settings['facebook']),('email','Email '+settings['name'],'mailto:'+settings['email'])] if href)
     mail_cta = '<a class="contact-cta" href="mailto:'+e(settings['email'])+'" aria-label="Email '+e(settings['name'])+'">'+icon('email')+'<span>Let’s talk</span></a>'
+    access_key = text(settings.get('web3forms_access_key',''),'Web3Forms access key')
+    if access_key and not re.fullmatch(r'[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}',access_key):
+        raise ValueError('Web3Forms access key must be a valid UUID')
+    contact_form = '<div class="contactblock contact-panel" id="contact"><span class="eyebrow">Events, portraits & anything in between</span><h2>Get in touch.</h2><p>Send a message right here. Tell me what you have in mind, and I’ll reply to the email address you leave.</p>'
+    if access_key:
+        contact_form += '<form id="contactForm" class="contact-form" action="https://api.web3forms.com/submit" method="POST"><input type="hidden" name="access_key" value="'+e(access_key)+'"><input type="hidden" name="subject" value="New photography inquiry"><input type="hidden" name="from_name" value="'+e(settings['name'])+' Portfolio"><input type="checkbox" name="botcheck" tabindex="-1" aria-hidden="true" class="hidden"><div class="form-row"><div class="form-field"><label for="contactName">Your name</label><input id="contactName" type="text" name="name" autocomplete="name" required maxlength="120" placeholder="Name"></div><div class="form-field"><label for="contactEmail">Email address</label><input id="contactEmail" type="email" name="email" autocomplete="email" required maxlength="254" placeholder="you@example.com"></div></div><div class="form-field"><label for="contactMessage">Your message</label><textarea id="contactMessage" name="message" rows="4" required maxlength="10000" placeholder="An event, a portrait, or a question about a photograph..."></textarea></div><div class="form-actions"><button class="button-link form-submit" type="submit">Send message</button><a class="email-alternative" href="mailto:'+e(settings['email'])+'">'+icon('email')+'<span>Or use email</span></a></div><p id="contactStatus" class="form-status" role="status" aria-live="polite" aria-atomic="true"></p><p class="form-privacy">Your details are sent through Web3Forms to deliver your message.</p></form>'
+    else:
+        contact_form += mail_cta
+    contact_form += '</div>'
+
     replacements = {'NAME':e(settings['name']), 'EMAIL':e(settings['email']), 'HEADLINE':'<br>'.join(e(settings['headline']).splitlines()),
                     'BIO':e(settings['bio']), 'INSTAGRAM':e(settings['instagram']), 'FACEBOOK':e(settings['facebook']),
-                    'HERO':hero, 'EVENTS':events, 'TABS':tabs, 'STORIES':story_section, 'STORY_NAV':'<a href="#stories">Field notes</a>' if cards else '',
-                    'OG_IMAGE':e(settings['site_url']+'/'+images[first_slide['image']]['src']) if first else '', 'YEAR':str(date.today().year), 'DATA':dataset, 'SOCIAL_ICONS':social_icons, 'MAIL_CTA':mail_cta, 'DIALOGS':(ROOT / 'templates/dialogs.html').read_text().replace('{{NAME}}',e(settings['name']))}
+                    'HERO':hero, 'EVENTS':events, 'TABS':tabs,
+                    'OG_IMAGE':e(settings['site_url']+'/'+images[first_slide['image']]['src']) if first else '', 'YEAR':str(date.today().year), 'SOCIAL_ICONS':social_icons, 'CONTACT_FORM':contact_form, 'DIALOGS':(ROOT / 'templates/dialogs.html').read_text().replace('{{NAME}}',e(settings['name']))}
     template = (ROOT / 'templates/index.html').read_text()
     output = re.sub(r'\{\{([A-Z_]+)\}\}', lambda m: replacements[m[1]], template)
     (stage / 'index.html').write_text(output)
@@ -287,15 +296,15 @@ def build(destination, include_drafts=False):
     def nav(prefix=''):
         return '<header class="nav"><a class="brand" href="'+prefix+'">'+e(settings['name'])+'<span>Photography</span></a><nav class="navlinks" aria-label="Main navigation"><a href="'+prefix+'work/">All work</a><a href="'+prefix+'#people">People & events</a><a href="'+prefix+'stories/">Stories</a><a href="'+prefix+'#about">About & contact</a></nav></header>'
     def page(title, body, prefix='../', scripts='', data=False):
-        return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap" rel="stylesheet"><meta name="theme-color" content="#dfe2da"><title>'+e(title)+' — '+e(settings['name'])+'</title><meta name="description" content="Photography, events, wildlife and stories by '+e(settings['name'])+'"><link rel="stylesheet" href="'+prefix+'assets/site.css"></head><body>'+nav(prefix)+body+'<footer><span>© '+str(date.today().year)+' '+e(settings['name'])+'</span><a href="'+prefix+'#about">Get in touch</a></footer>'+('<script src="'+prefix+'assets/data.js"></script>' if data else '')+scripts+'</body></html>'
+        return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap" rel="stylesheet"><meta name="theme-color" content="#dfe2da"><title>'+e(title)+' - '+e(settings['name'])+'</title><meta name="description" content="Photography, events, wildlife and stories by '+e(settings['name'])+'"><link rel="icon" href="'+prefix+'assets/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="'+prefix+'assets/site.css"></head><body>'+nav(prefix)+body+'<footer><span>© '+str(date.today().year)+' '+e(settings['name'])+'</span><a href="'+prefix+'#about">Get in touch</a></footer>'+('<script src="'+prefix+'assets/data.js"></script>' if data else '')+scripts+'</body></html>'
     dialogs = (ROOT / 'templates/dialogs.html').read_text().replace('{{NAME}}', e(settings['name']))
     work_dir = stage / 'work';work_dir.mkdir()
     work_filters = ''.join('<button data-work-filter="'+e(cat)+'" aria-pressed="'+str(i==0).lower()+'" class="'+('active' if i==0 else '')+'">'+e('Nature' if cat == 'nature' else cat)+'</button>' for i,cat in enumerate(['All','People & events','nature']+categories))
     all_rows = ''
     for index in range(0,len(all_ids),2):
         pair = all_ids[index:index+2]
-        all_rows += '<div class="photo-row">' + ''.join(button(id,'All',descriptions[id],'<div class="image-caption"><b>'+e(images[id]['category'] or 'Photograph')+'</b></div>',prefix='../') for id in pair) + '</div>'
-    work_body = '<main class="archive-page"><div class="page-heading"><span class="eyebrow">The complete portfolio</span><h1>All photographs.</h1><p>People, places, and the natural world. Every published frame, in one place.</p></div><div class="archive-tools"><div class="tabs" aria-label="Filter photographs">'+work_filters+'</div><label class="search-label">Search photographs<input id="photoSearch" type="search" placeholder="Search captions and descriptions" autocomplete="off"></label></div><div class="results-bar"><p id="workCount" role="status">'+str(len(all_ids))+' photographs</p><button id="resetFilters" class="text-button">Reset filters</button></div><div class="nature-rows" id="allPhotos">'+all_rows+'</div><p class="empty-state" id="noResults" hidden>No photographs match. Try another search or reset the filters.</p></main>'+dialogs
+        all_rows += '<div class="photo-row">' + ''.join(button(id,'All',descriptions[id],'',prefix='../') for id in pair) + '</div>'
+    work_body = '<main class="archive-page"><div class="page-heading"><span class="eyebrow">The complete portfolio</span><h1>All photographs.</h1></div><div class="archive-tools"><div class="tabs" aria-label="Filter photographs">'+work_filters+'</div></div><div class="results-bar"><p id="workCount" role="status">'+str(len(all_ids))+' photographs</p><button id="resetFilters" class="text-button">Reset filters</button></div><div class="nature-rows" id="allPhotos">'+all_rows+'</div><p class="empty-state" id="noResults" hidden>No photographs in this category yet. Try another filter.</p></main>'+dialogs
     (work_dir / 'index.html').write_text(page('All photographs',work_body,scripts='<script src="../assets/gallery.js" defer></script>',data=True))
     story_dir=stage/'stories';story_dir.mkdir(exist_ok=True)
     story_cards=''.join('<a class="story-card" href="'+e(s['slug'])+'/">'+img(s['coverId'], prefix='../')+'<div class="story-meta">'+e(s.get('category','Field notes'))+'</div><h2>'+e(s['title'])+'</h2><p>'+e(s.get('summary',''))+'</p></a>' for s in story_records)
@@ -306,10 +315,10 @@ def build(destination, include_drafts=False):
         meta = ' · '.join(e(x) for x in [s['date'], s['location']] if x)
         # The opening photograph is not repeated again in the story gallery.
         figures = ''.join('<figure>'+img(id, prefix='../../')+'<figcaption>'+e(images[id]['caption'])+'</figcaption></figure>' for id in dict.fromkeys(s['gallery']) if id != s['coverId'])
-        article='<main class="story-article"><a class="backlink" href="../">All stories</a><div class="story-meta">'+e(s.get('category','Field notes'))+'</div><h1>'+e(s['title'])+'</h1><div class="story-meta">'+meta+'</div>'+img(s['coverId'],True,'../../')+'<div class="prose">'+paragraphs(s['body'])+'</div>'+figures+'<div class="story-end"><a href="../../work/">Explore all photographs</a><a href="mailto:'+e(settings['email'])+'">Work with me</a></div></main>'
+        article='<main class="story-article"><a class="backlink" href="../">All stories</a><div class="story-meta">'+e(s.get('category','Field notes'))+'</div><h1>'+e(s['title'])+'</h1><div class="story-meta">'+meta+'</div>'+img(s['coverId'],True,'../../')+'<div class="prose">'+paragraphs(s['body'])+'</div>'+figures+'<div class="story-end"><a href="../../work/">Explore all photographs</a><a href="../../#contact">Work with me</a></div></main>'
         (folder/'index.html').write_text(page(s['title'],article,prefix='../../'))
     # Bust browser caches when any frontend asset or content manifest changes.
-    versions = {name:hashlib.sha256((stage/'assets'/name).read_bytes()).hexdigest()[:12] for name in ['site.css','gallery.js','data.js']}
+    versions = {name:hashlib.sha256((stage/'assets'/name).read_bytes()).hexdigest()[:12] for name in ['site.css','gallery.js','data.js','contact.js','favicon.svg']}
     for page_path in stage.rglob('*.html'):
         page_content=page_path.read_text()
         for name,version in versions.items():

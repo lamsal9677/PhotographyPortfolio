@@ -25,6 +25,11 @@ jobs:
           key: portfolio-images-v2-${{ runner.os }}-${{ hashFiles('media/**', 'scripts/build.py') }}
           restore-keys: portfolio-images-v2-${{ runner.os }}-
       - run: python -m pip install -r requirements.txt
+      - uses: actions/setup-node@v7
+        with:
+          node-version: '24'
+          package-manager-cache: false
+      - run: node --test tests/contact.test.cjs
       - run: python -m unittest discover -s tests -v
       - run: python scripts/build.py
       - uses: actions/upload-pages-artifact@v4

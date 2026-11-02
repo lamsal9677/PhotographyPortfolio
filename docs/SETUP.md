@@ -59,13 +59,13 @@ To change collection order or photo order, edit its display number or reorder it
 
 ## 6. Write a story
 
-1. Choose **Stories / Field notes → New**, or edit the included unpublished first-field-note example.
+1. Choose **Stories / Field notes → New**.
 2. Enter a title, category, optional date and broad location, and select a cover.
 3. Write a short introduction and your story. Separate paragraphs with a blank line. This first version uses plain text, not HTML or a rich-text editor.
 4. Optionally add photographs with captions. You can select images already in your portfolio; no second upload is needed.
 5. Turn on **Publish on website** and save when ready.
 
-A published story gets a page at `stories/<filename>/`, appears under Field notes, and is linked from the cover photo and included photographs in the viewer. Event stories work the same way as wildlife stories. If more than one story uses the same photo, the current viewer displays one related-story link.
+A published story gets a page at `stories/<filename>/`, appears on the Stories page (not the homepage), and is linked from the cover photo and included photographs in the viewer. Event stories work the same way as wildlife stories. If more than one story uses the same photo, the current viewer displays one related-story link.
 
 Drafts are excluded from the deployed site but are not private in a public repository. Do not write private notes, client information, or precise sensitive wildlife coordinates in repository files.
 

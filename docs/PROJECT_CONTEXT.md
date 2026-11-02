@@ -28,13 +28,13 @@ Sanskar Lamsal photographs events, portraits, landscapes, birds, wildlife, and i
 
 ## Content and publication rules
 
-There are currently 54 unique photographs in seven collections: three people/event collections, landscapes, birds, wildlife, and small worlds. The sole story entry is an unfinished draft. Never invent a first-person story, location, client, testimonial, or biographical fact to fill empty sections. Stories are plain-text paragraphs, not rich text, in this version. Unpublished entries are excluded from the built website but are readable in a public source repository. Never put confidential client galleries or precise sensitive wildlife locations in public repository files.
+There are currently 54 unique photographs in seven collections: three people/event collections, landscapes, birds, wildlife, and small worlds. The owner has published two stories: Deurali on the way to Annapurna Base Camp, and Eurasian Tree Sparrow. Preserve their words and metadata. Never invent a first-person story, location, client, testimonial, or biographical fact to fill empty sections. Stories are plain-text paragraphs, not rich text, in this version. Unpublished entries are excluded from the built website but are readable in a public source repository. Never put confidential client galleries or precise sensitive wildlife locations in public repository files.
 
 ## Design requirements and history
 
 The owner rejected stock photographs, a fictional studio brand, excessive white space, overly dark presentation, forced photo crops, and awkward mobile layouts. Preserve original photograph proportions. Current direction is a medium sage/stone surface, readable dark type, with an unboxed, automatic photographic strip at the top. Keep only the full-screen viewer dark. Keep the work central, copy restrained, and navigation visible on phones.
 
-The current iteration uses an automatically advancing native-ratio photo strip with no visible playback controls, an all-photo archive with filters/search, an always-visible Stories destination, subtle reduced-motion-aware animation, URL-backed galleries, and image-build caching. Do not silently reintroduce dark-all-over styling or fixed object-fit:cover crops for the photography.
+The current iteration uses an automatically advancing native-ratio photo strip with no visible playback controls, an all-photo archive with category filters, an always-visible Stories destination, subtle reduced-motion-aware animation, URL-backed galleries, and image-build caching. Do not silently reintroduce dark-all-over styling or fixed object-fit:cover crops for the photography.
 
 ## Working agreement
 
@@ -51,3 +51,9 @@ The owner dislikes diagonal arrow/emoji decoration, boxy controls, and the old f
 References reviewed: Jimmy Chin, Nadav Kander, Rinko Kawauchi. They inform image-led hierarchy and quiet navigation; do not copy their artwork or branding.
 
 Editorial refresh verified: code commit `0c9f67d`, 13 automated checks, and successful GitHub Pages deployment on 2026-11-01. Automatic progression and centering were checked at 1800px; phone layout and gallery controls at 320px/390px.
+
+## Homepage cleanup and contact form
+
+Owner request: show ordinary hyphens in public copy; remove All work search and photo-category captions while retaining people/events first; remove the homepage nature-footer prompts and story previews. Stories still have their own index and navigation entry. Preserve accessible photo descriptions even when visible labels are removed.
+
+A native SVG SL favicon is included on every page. The homepage has a compact Web3Forms form (name, email, message), using the owner's provided public access key from content/site.json. The key is hidden from routine CMS editing and intentionally present in public form markup. It is not a private API credential. Primary inquiry links point to the form; direct email remains optional. Never claim an inbox delivery test happened unless a live message was explicitly authorized and actually sent. Automated form tests use simulated service responses; browser checks can exercise invalid/empty submissions without sending an email.

@@ -68,7 +68,7 @@
       document.querySelector('#albumDescription').textContent = a.description;
       const foot = document.querySelector('#albumfoot');
       const contact = document.createElement('a');
-      contact.href = 'mailto:' + settings.email + '?subject=Photography%20inquiry';
+      contact.href = url('#contact');
       contact.textContent = a.kind === 'event' ? 'Inquire about your occasion' : 'Get in touch';
       const browse = document.createElement('a');
       browse.href = url(a.kind === 'event' ? 'work/?category=nature' : 'work/');
@@ -189,8 +189,6 @@
     const a = albums[activeNature];
     if (!natureGrid || !a) return;
     rows(natureGrid, a.featured, id => openLight(a.all, id, a.title), id => activeNature === 'Selected' ? `<div class="image-caption"><b>${esc(images[id].category)}</b></div>` : (images[id].caption ? `<div class="image-caption">${esc(images[id].caption)}</div>` : ''));
-    document.querySelector('#natureNote').textContent = activeNature === 'Selected' ? 'A few selected frames' : `${a.all.length} photographs`;
-    document.querySelector('#natureAlbum').textContent = activeNature === 'Selected' ? 'Explore the nature collection' : `Explore ${activeNature.toLowerCase()}`;
   }
   document.querySelectorAll('[data-category]').forEach(button => button.onclick = () => {
     activeNature = button.dataset.category;
@@ -200,22 +198,19 @@
     });
     renderNature();
   });
-  document.querySelector('#natureAlbum')?.addEventListener('click', () => openAlbum(activeNature));
   renderNature();
 
-  /* Every published photograph, with filters and captions searchable in one view. */
+  /* Every published photograph, with people/events first and category filters. */
   const allPhotos = document.querySelector('#allPhotos');
   if (allPhotos) {
     let filter = new URLSearchParams(location.search).get('category') || 'All';
     const supported = [...document.querySelectorAll('[data-work-filter]')].map(button => button.dataset.workFilter);
     if (!supported.includes(filter) && filter !== 'nature') filter = 'All';
-    const search = document.querySelector('#photoSearch');
     function renderWork() {
-      const term = search.value.trim().toLowerCase();
       const ids = albums.All.all.filter(id => {
         const category = images[id].category;
         const matchesCategory = filter === 'All' || (filter === 'nature' ? category !== 'People & events' : category === filter);
-        return matchesCategory && (!term || `${alt(id)} ${images[id].caption} ${category}`.toLowerCase().includes(term));
+        return matchesCategory;
       });
       document.querySelectorAll('[data-work-filter]').forEach(button => {
         const active = button.dataset.workFilter === filter;
@@ -224,7 +219,7 @@
       });
       document.querySelector('#workCount').textContent = `${ids.length} photograph${ids.length === 1 ? '' : 's'}${filter === 'All' ? '' : ' · ' + (filter === 'nature' ? 'Nature' : filter)}`;
       document.querySelector('#noResults').hidden = ids.length > 0;
-      rows(allPhotos, ids, id => openLight(ids, id, filter === 'All' ? 'All photographs' : filter), id => `<div class="image-caption"><b>${esc(images[id].category || 'Photograph')}</b>${images[id].story ? '<span>Story available</span>' : ''}</div>`);
+      rows(allPhotos, ids, id => openLight(ids, id, filter === 'All' ? 'All photographs' : filter));
     }
     document.querySelectorAll('[data-work-filter]').forEach(button => button.onclick = () => {
       filter = button.dataset.workFilter;
@@ -234,10 +229,8 @@
       history.replaceState(null, '', current.pathname + current.search);
       renderWork();
     });
-    let searchTimer;
-    search.addEventListener('input', () => { clearTimeout(searchTimer); searchTimer = setTimeout(renderWork, 120); });
     document.querySelector('#resetFilters').onclick = () => {
-      filter = 'All'; search.value = '';
+      filter = 'All';
       history.replaceState(null, '', location.pathname);
       renderWork();
     };

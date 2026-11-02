@@ -23,7 +23,7 @@ class ContentBuildTests(unittest.TestCase):
         shutil.copytree(REPO / 'assets', self.root / 'assets', dirs_exist_ok=True)
         Image.new('RGB', (1200,800), 'red').save(self.root / 'media/event.jpg')
         Image.new('RGB', (900,900), 'blue').save(self.root / 'media/nature.jpg')
-        self.site = {'name':'Photographer','email':'hello@example.com','headline':'People and nature','bio':'A biography','site_url':'https://example.com','instagram':'','facebook':'','hero_event_collection':'event','hero_nature_collection':'nature'}
+        self.site = {'name':'Photographer','email':'hello@example.com','headline':'People and nature','bio':'A biography','site_url':'https://example.com','instagram':'','facebook':'','hero_event_collection':'event','hero_nature_collection':'nature','web3forms_access_key':'00000000-0000-0000-0000-000000000000'}
         self.write('content/site.json', self.site)
         for name,kind,category in [('event','event','People & events'),('nature','nature','Birds')]:
             self.write('content/collections/'+name+'.json', {'title':name,'kind':kind,'category':category,'published':True,'photos':[{'image':'/media/'+name+'.jpg','alt':'A '+name+' photograph','highlight':True}]})
@@ -110,11 +110,40 @@ class ContentBuildTests(unittest.TestCase):
         page=(self.root/'_site/index.html').read_text()
         self.assertIn('id="showcaseRail"',page)
         self.assertNotIn('slidePlay',page)
-        self.assertIn('class="contact-cta"',page)
+        self.assertIn('id="contactForm"',page)
         self.assertIn('aria-label="Email Photographer"',page)
         self.assertIn('<svg ',page)
         for built in (self.root/'_site').rglob('*.html'):
             self.assertNotIn('↗',built.read_text())
+
+    def test_clean_archive_and_homepage_keep_stories_on_separate_page(self):
+        self.write('content/stories/note.json',{'title':'A real field note','published':True,'cover':'/media/nature.jpg','body':'The owner’s story - with a normal dash.'})
+        self.run_build()
+        home=(self.root/'_site/index.html').read_text()
+        work=(self.root/'_site/work/index.html').read_text()
+        self.assertNotIn('photoSearch',work)
+        self.assertNotIn('Search captions',work)
+        self.assertNotIn('image-caption',work)
+        self.assertNotIn('id="natureAlbum"',home)
+        self.assertNotIn('id="stories"',home)
+        self.assertIn('href="stories/"',home)
+        self.assertNotIn('A real field note',home)
+        self.assertIn('A real field note',(self.root/'_site/stories/index.html').read_text())
+        data=json.loads((self.root/'_site/assets/data.js').read_text().split('=',1)[1].rstrip(';'))
+        self.assertEqual(data['images'][data['albums']['All']['all'][0]]['category'],'People & events')
+
+    def test_contact_form_and_favicons_are_built_for_project_subpaths(self):
+        self.run_build()
+        home=(self.root/'_site/index.html').read_text()
+        self.assertIn('action="https://api.web3forms.com/submit" method="POST"',home)
+        self.assertIn('name="access_key" value="00000000-0000-0000-0000-000000000000"',home)
+        self.assertIn('type="email" name="email"',home)
+        self.assertIn('aria-live="polite"',home)
+        self.assertIn('assets/contact.js?v=',home)
+        for page in (self.root/'_site').rglob('*.html'):
+            self.assertIn('rel="icon"',page.read_text())
+            self.assertNotIn(' — ',page.read_text())
+        self.assertTrue((self.root/'_site/assets/favicon.svg').exists())
 
     def test_outside_media_path_is_rejected(self):
         with self.assertRaises(ValueError):builder.safe_image_path('../secret.jpg')

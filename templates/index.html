@@ -5,12 +5,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap" rel="stylesheet">
   <meta name="theme-color" content="#dfe2da">
-  <title>{{NAME}} — Photographer</title>
+  <title>{{NAME}} - Photographer</title>
   <meta name="description" content="Photography by {{NAME}}. Events, portraits, landscapes, wildlife and stories from the field.">
-  <meta property="og:title" content="{{NAME}} — Photography">
+  <meta property="og:title" content="{{NAME}} - Photography">
   <meta property="og:type" content="website">
   <meta property="og:image" content="{{OG_IMAGE}}">
   <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="assets/site.css">
 </head>
 <body>
@@ -37,19 +38,17 @@
       <div class="herofoot"><span>Events · Portraits · Landscapes · Wildlife</span><a href="work/">Browse all photographs</a></div>
     </section>
     <section id="people" class="reveal-section">
-      <div class="sectionhead"><div><span class="eyebrow">People & occasions</span><h2>Your moments, thoughtfully captured.</h2></div><a href="mailto:{{EMAIL}}?subject=Event%20photography%20inquiry">Discuss your occasion</a></div>
+      <div class="sectionhead"><div><span class="eyebrow">People & occasions</span><h2>Your moments, thoughtfully captured.</h2></div><a href="#contact">Discuss your occasion</a></div>
       <div class="photo-row event-row" id="eventgrid">{{EVENTS}}</div>
     </section>
     <section id="nature" class="reveal-section">
       <div class="sectionhead"><div><span class="eyebrow">The natural world</span><h2>A different kind of encounter.</h2></div><a href="work/?category=nature">All nature photographs</a></div>
       <div class="tabs" role="group" aria-label="Nature collections">{{TABS}}</div>
       <div class="nature-rows" id="naturegrid"></div>
-      <div class="naturefoot"><span id="natureNote">Selected photographs</span><button id="natureAlbum">View collection</button></div>
     </section>
-    {{STORIES}}
     <section class="about reveal-section" id="about">
       <div><span class="eyebrow">Behind the camera</span><h2>{{NAME}}</h2><p class="bio">{{BIO}}</p><div class="socials">{{SOCIAL_ICONS}}</div></div>
-      <div class="contactblock"><div class="eyebrow">Events, portraits & inquiries</div>{{MAIL_CTA}}<p>Tell me about your occasion, date, and location.</p><a class="text-button" href="stories/">Read the stories behind the photographs</a></div>
+      {{CONTACT_FORM}}
     </section>
     <noscript><p class="noscript">Explore the collections above or <a href="mailto:{{EMAIL}}">get in touch by email</a>. Enable JavaScript for gallery controls.</p></noscript>
   </main>
@@ -57,5 +56,6 @@
   {{DIALOGS}}
   <script src="assets/data.js" defer></script>
   <script src="assets/gallery.js" defer></script>
+  <script src="assets/contact.js" defer></script>
 </body>
 </html>

@@ -58,3 +58,14 @@ Owner feedback: diagonal arrow decoration was excessive, the boxed slideshow fel
 - Thirteen automated checks pass, including a regression check against arrow decoration and old player controls.
 
 Editorial deployment verified: https://github.com/lamsal9677/PhotographyPortfolio/actions/runs/41370674101 (code `0c9f67d`). Automatic progression was observed through multiple frames without interaction, with correct centering at 1800px.
+
+## Homepage cleanup / contact form - 2026-11-01
+
+- Pulled and preserved two newly published owner stories before changing the layout.
+- Removed the archive search input and all visible photo labels in All work; 54 photos remain, starting with people/events. Birds still filters to 12 photos.
+- Removed homepage story cards and the nature-footer collection prompt. The Stories index and navigation remain available.
+- Added a cache-versioned SVG favicon to all generated pages and normalized visible title separators to hyphens.
+- Added a name/email/message form using the owner's Web3Forms public access key. Primary event/gallery inquiries now lead to the form; email remains an alternative.
+- Seven simulated form tests cover request shape, validation, service failures, malformed responses, rate limits, network errors, confirmed success/reset behavior, and duplicate submissions.
+- Desktop and 320px browser checks verified native empty/invalid-email validation and no horizontal overflow. No live message was submitted.
+- A server-side non-submitting OPTIONS probe was rejected by Web3Forms' client-only restriction; that probe does not verify browser delivery. End-to-end inbox confirmation remains an explicit owner test item.

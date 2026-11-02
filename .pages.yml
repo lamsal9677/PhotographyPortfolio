@@ -291,6 +291,12 @@
           "name": "hero_nature_image",
           "label": "Opening nature photograph",
           "type": "image"
+        },
+        {
+          "name": "web3forms_access_key",
+          "label": "Web3Forms public access key",
+          "type": "string",
+          "hidden": true
         }
       ]
     }

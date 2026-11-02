@@ -51,7 +51,7 @@ Only published content and referenced, processed images are included in `_site/`
 
 Do not run `--include-drafts` for public publishing. It is a local preview flag; incomplete drafts may fail validation until completed.
 
-`_headers` is for hosts that support it; GitHub Pages does not apply that file. Custom-domain DNS and GitHub settings are configured separately. There are no email form submissions: inquiry links open the visitor's email app.
+`_headers` is for hosts that support it; GitHub Pages does not apply that file. Custom-domain DNS and GitHub settings are configured separately. The homepage contact form sends name, email, and message through Web3Forms. Its access key is a public form key stored in site settings, not an authentication secret. Email remains an optional fallback.
 
 ## Rights
 
@@ -59,7 +59,7 @@ All photographs are by Sanskar Lamsal. All rights reserved. Access to this repos
 
 ## Current navigation and project tracking
 
-- `work/`: every published photograph, with category filters and search.
+- `work/`: every published photograph, with category filters.
 - `stories/`: always available; shows published stories or an honest empty state.
 - Opening photo strip: automatically mixes nature and event highlights without visible playback controls; interaction and reduced-motion preferences stop movement.
 - Gallery URLs support sharing and browser Back; the photo viewer remains dark for comfortable viewing.
@@ -68,3 +68,11 @@ All photographs are by Sanskar Lamsal. All rights reserved. Access to this repos
 - `docs/AUDIT.md`: usability findings and verification notes.
 
 The old ChatGPT-hosted prototype URL is independent of GitHub Pages. Edits saved through Pages CMS and pushes to this repository update GitHub Pages, not that older prototype.
+
+## Contact form checks
+
+`assets/contact.js` posts to Web3Forms using the supplied public access key. Native HTML POST is the fallback when JavaScript is disabled. The asynchronous interface validates inputs, disables repeated sends, resets only after confirmed success, and keeps the message on failure. The form does not store messages locally.
+
+Run `node --test tests/contact.test.cjs` to test request shape, validation, successful delivery responses, failure responses, network errors, and repeated clicks using simulated responses. CI runs these checks with Node 24. No live email is sent by the tests.
+
+The homepage omits story previews and nature-collection footer prompts. Stories remain in navigation and their own index. All work uses photo-only rows, without category captions or a search box; people/events remain first.

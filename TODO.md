@@ -24,7 +24,7 @@ Last updated: 2026-11-01. Project context: [docs/PROJECT_CONTEXT.md](docs/PROJEC
 
 ## Next: content and owner input
 
-- [ ] Publish the first real wildlife/travel field note in Pages CMS. Add title, cover, body, and optional photographs; turn Publish on website on. No story has been published yet.
+- [x] Owner published the first two real field notes: Deurali on the way to Annapurna Base Camp, and Eurasian Tree Sparrow.
 - [ ] Expand the About section with Sanskar's own account of their photography, interests, and approach. Waiting for owner input; do not fabricate a biography.
 - [ ] Add an owner-selected portrait for About, if desired.
 - [ ] Review collection cover choices and editorial ordering with the owner.
@@ -51,3 +51,17 @@ Last updated: 2026-11-01. Project context: [docs/PROJECT_CONTEXT.md](docs/PROJEC
 - [x] Remove repetitive “View photograph” hints and repeated photographer-name captions.
 - [x] Verify phone/desktop interaction, automatic advance, keyboard selection, gallery controls, and accessible icon labels.
 - [x] Deploy and verify the editorial refresh on GitHub Pages. Code commit `0c9f67d`; [successful deployment](https://github.com/lamsal9677/PhotographyPortfolio/actions/runs/41370674101).
+
+## Homepage cleanup and contact form
+
+- [x] Remove All work search and category captions while preserving people/events first.
+- [x] Remove homepage story previews and the nature-footer exploration prompt.
+- [x] Keep Stories navigation and both owner-written posts.
+- [x] Standardize visible long/double dashes to simple hyphens where used as separators.
+- [x] Add an SVG monogram favicon to homepage, archive, story index, and story pages.
+- [x] Add a styled Web3Forms contact form using the owner-provided key.
+- [x] Route primary inquiry links to the form and keep direct email as an option.
+- [x] Test required-field validation, success/error handling, duplicate-submit prevention, and message retention with simulated responses.
+- [x] Check phone layout without sending a live email.
+- [ ] Deploy and verify this cleanup on GitHub Pages.
+- [ ] Confirm inbox delivery with a real submission when the owner sends one or explicitly requests a live test. No live test message has been sent automatically.

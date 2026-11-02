@@ -1,0 +1,298 @@
+{
+  "media": {
+    "input": "media",
+    "output": "/media",
+    "extensions": [
+      "jpg",
+      "jpeg",
+      "png",
+      "webp"
+    ],
+    "rename": "safe"
+  },
+  "content": [
+    {
+      "name": "collections",
+      "label": "Collections",
+      "type": "collection",
+      "path": "content/collections",
+      "format": "json",
+      "filename": "{primary}.json",
+      "view": {
+        "primary": "title",
+        "sort": "order",
+        "order": "asc"
+      },
+      "fields": [
+        {
+          "name": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "published",
+          "label": "Publish on website",
+          "type": "boolean",
+          "description": "Turn this on only when the collection is ready."
+        },
+        {
+          "name": "kind",
+          "label": "Section",
+          "type": "select",
+          "required": true,
+          "options": {
+            "values": [
+              {
+                "name": "event",
+                "label": "People & events"
+              },
+              {
+                "name": "nature",
+                "label": "Nature"
+              }
+            ]
+          }
+        },
+        {
+          "name": "category",
+          "label": "Category",
+          "type": "select",
+          "options": {
+            "values": [
+              "People & events",
+              "Landscapes",
+              "Birds",
+              "Wildlife",
+              "Small worlds"
+            ]
+          },
+          "required": true
+        },
+        {
+          "name": "order",
+          "label": "Display order",
+          "type": "number",
+          "description": "Lower numbers appear first."
+        },
+        {
+          "name": "description",
+          "label": "Description",
+          "type": "text"
+        },
+        {
+          "name": "cover",
+          "label": "Collection cover",
+          "type": "image",
+          "description": "Choose a photograph that is also in this collection."
+        },
+        {
+          "name": "photos",
+          "label": "Photographs",
+          "type": "object",
+          "list": {
+            "collapsible": {
+              "collapsed": true,
+              "summary": "{alt}"
+            }
+          },
+          "fields": [
+            {
+              "name": "image",
+              "label": "Image",
+              "type": "image",
+              "required": true
+            },
+            {
+              "name": "alt",
+              "label": "Describe this photograph",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "caption",
+              "label": "Caption / field note",
+              "type": "text"
+            },
+            {
+              "name": "highlight",
+              "label": "Feature among collection highlights",
+              "type": "boolean"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "stories",
+      "label": "Stories / Field notes",
+      "type": "collection",
+      "path": "content/stories",
+      "format": "json",
+      "filename": "{primary}.json",
+      "view": {
+        "primary": "title",
+        "sort": "date",
+        "order": "desc"
+      },
+      "fields": [
+        {
+          "name": "title",
+          "label": "Title",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "published",
+          "label": "Publish on website",
+          "type": "boolean",
+          "description": "Drafts are excluded from the built website. Public repositories still expose draft source files."
+        },
+        {
+          "name": "date",
+          "label": "Date",
+          "type": "date"
+        },
+        {
+          "name": "category",
+          "label": "Category",
+          "type": "select",
+          "options": {
+            "values": [
+              "People & events",
+              "Landscapes",
+              "Birds",
+              "Wildlife",
+              "Small worlds"
+            ]
+          },
+          "required": true
+        },
+        {
+          "name": "location",
+          "label": "Location",
+          "type": "string",
+          "description": "Optional broad location. Do not include sensitive wildlife coordinates."
+        },
+        {
+          "name": "cover",
+          "label": "Cover",
+          "type": "image"
+        },
+        {
+          "name": "summary",
+          "label": "Short introduction",
+          "type": "text"
+        },
+        {
+          "name": "body",
+          "label": "Your story",
+          "type": "text",
+          "description": "Write in paragraphs, separated by a blank line. Plain text; HTML is never executed."
+        },
+        {
+          "name": "photos",
+          "label": "Photographs",
+          "type": "object",
+          "list": {
+            "collapsible": {
+              "collapsed": true,
+              "summary": "{alt}"
+            }
+          },
+          "fields": [
+            {
+              "name": "image",
+              "label": "Image",
+              "type": "image",
+              "required": true
+            },
+            {
+              "name": "alt",
+              "label": "Describe this photograph",
+              "type": "string",
+              "required": true
+            },
+            {
+              "name": "caption",
+              "label": "Caption / field note",
+              "type": "text"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "site",
+      "label": "Site settings",
+      "type": "file",
+      "path": "content/site.json",
+      "format": "json",
+      "fields": [
+        {
+          "name": "name",
+          "label": "Name",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "email",
+          "label": "Email",
+          "type": "string",
+          "required": true
+        },
+        {
+          "name": "headline",
+          "label": "Headline",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "bio",
+          "label": "Bio",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "instagram",
+          "label": "Instagram",
+          "type": "string"
+        },
+        {
+          "name": "facebook",
+          "label": "Facebook",
+          "type": "string"
+        },
+        {
+          "name": "site_url",
+          "label": "Public website URL",
+          "type": "string",
+          "required": true,
+          "description": "No trailing slash. Begin with the GitHub Pages URL; change after your custom domain works."
+        },
+        {
+          "name": "hero_event_collection",
+          "label": "Opening people collection",
+          "type": "string",
+          "description": "Collection filename without .json, e.g. graduations."
+        },
+        {
+          "name": "hero_event_image",
+          "label": "Opening people photograph",
+          "type": "image"
+        },
+        {
+          "name": "hero_nature_collection",
+          "label": "Opening nature collection",
+          "type": "string",
+          "description": "Collection filename without .json, e.g. landscapes."
+        },
+        {
+          "name": "hero_nature_image",
+          "label": "Opening nature photograph",
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}

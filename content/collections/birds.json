@@ -1,0 +1,83 @@
+{
+  "title": "Birds",
+  "kind": "nature",
+  "category": "Birds",
+  "published": true,
+  "order": 4,
+  "description": "Feathers, colour, and fleeting encounters. A closer look at the birds around us.",
+  "cover": "/media/bird-01.webp",
+  "photos": [
+    {
+      "image": "/media/bird-01.webp",
+      "alt": "Sparrow among branches and golden background light",
+      "caption": "",
+      "highlight": true
+    },
+    {
+      "image": "/media/bird-02.webp",
+      "alt": "A pale bird with a golden crest perched on a branch",
+      "caption": "",
+      "highlight": true
+    },
+    {
+      "image": "/media/bird-03.webp",
+      "alt": "Bird photographed in its surroundings",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/bird-04.webp",
+      "alt": "Close portrait of a pigeon with an iridescent neck",
+      "caption": "",
+      "highlight": true
+    },
+    {
+      "image": "/media/bird-05.webp",
+      "alt": "Bird photographed in its surroundings",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/bird-06.webp",
+      "alt": "Bird photographed in its surroundings",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/bird-07.webp",
+      "alt": "Bird photographed in its surroundings",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/bird-08.webp",
+      "alt": "Bird photographed in its surroundings",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/bird-09.webp",
+      "alt": "Bird photographed in its surroundings",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/bird-10.webp",
+      "alt": "Bird photographed in its surroundings",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/bird-11.webp",
+      "alt": "Bird photographed in its surroundings",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/bird-12.webp",
+      "alt": "Robin standing in green grass",
+      "caption": "",
+      "highlight": true
+    }
+  ]
+}

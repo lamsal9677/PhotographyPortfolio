@@ -11,3 +11,7 @@ __pycache__/
 .openai/
 # Local working files
 work/
+
+# Generated static output
+_site/
+_site-building/

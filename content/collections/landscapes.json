@@ -1,0 +1,83 @@
+{
+  "title": "Landscapes",
+  "kind": "nature",
+  "category": "Landscapes",
+  "published": true,
+  "order": 3,
+  "description": "A sense of place, from mountain peaks and evening shores to quiet paths closer to home.",
+  "cover": "/media/landscape-02.webp",
+  "photos": [
+    {
+      "image": "/media/landscape-01.webp",
+      "alt": "Orange sunset over a lake and a silhouetted tree",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/landscape-02.webp",
+      "alt": "Himalayan peaks above a mountain lake with a small figure in the foreground",
+      "caption": "",
+      "highlight": true
+    },
+    {
+      "image": "/media/landscape-03.webp",
+      "alt": "A stupa framed against a warm evening sky",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/landscape-04.webp",
+      "alt": "Purple and gold sunset over a rocky shoreline",
+      "caption": "",
+      "highlight": true
+    },
+    {
+      "image": "/media/landscape-05.webp",
+      "alt": "A lakeside pavilion reflected in still winter water",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/landscape-06.webp",
+      "alt": "A bird crosses a fiery sunset above the sea",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/landscape-07.webp",
+      "alt": "A snow-covered mountain framed by village rooftops",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/landscape-08.webp",
+      "alt": "A white stupa beyond a lotus pond",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/landscape-09.webp",
+      "alt": "Stars above rugged mountain formations",
+      "caption": "",
+      "highlight": true
+    },
+    {
+      "image": "/media/landscape-10.webp",
+      "alt": "Homes and trees reflected in a still pond",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/landscape-11.webp",
+      "alt": "A winding path beneath bare trees",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/landscape-12.webp",
+      "alt": "A wooden bench in soft morning sunlight",
+      "caption": "",
+      "highlight": true
+    }
+  ]
+}

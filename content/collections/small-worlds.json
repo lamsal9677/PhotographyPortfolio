@@ -1,0 +1,47 @@
+{
+  "title": "Small worlds",
+  "kind": "nature",
+  "category": "Small worlds",
+  "published": true,
+  "order": 6,
+  "description": "A change of scale. Insects, flowers, and the details that reward a closer look.",
+  "cover": "/media/insect-01.webp",
+  "photos": [
+    {
+      "image": "/media/insect-01.webp",
+      "alt": "A colourful ladybird on a green blade of grass",
+      "caption": "",
+      "highlight": true
+    },
+    {
+      "image": "/media/insect-02.webp",
+      "alt": "A small detail in the natural world",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/insect-03.webp",
+      "alt": "A close view of a hovering insect",
+      "caption": "",
+      "highlight": true
+    },
+    {
+      "image": "/media/insect-04.webp",
+      "alt": "An insect on the centre of a pink flower",
+      "caption": "",
+      "highlight": true
+    },
+    {
+      "image": "/media/insect-05.webp",
+      "alt": "A grasshopper on a yellow flower",
+      "caption": "",
+      "highlight": true
+    },
+    {
+      "image": "/media/insect-06.webp",
+      "alt": "A small detail in the natural world",
+      "caption": "",
+      "highlight": false
+    }
+  ]
+}

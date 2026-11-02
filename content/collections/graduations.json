@@ -1,0 +1,35 @@
+{
+  "title": "Graduations",
+  "kind": "event",
+  "category": "People & events",
+  "published": true,
+  "order": 0,
+  "description": "Portraits to mark a new chapter. Selected graduation photographs from my portfolio.",
+  "cover": "/media/potrait-03.webp",
+  "photos": [
+    {
+      "image": "/media/potrait-01.webp",
+      "alt": "Graduate adjusting a red tassel beneath flowering branches",
+      "caption": "",
+      "highlight": true
+    },
+    {
+      "image": "/media/potrait-02.webp",
+      "alt": "A graduate holding an umbrella outdoors",
+      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/potrait-03.webp",
+      "alt": "Graduate in a blue cap and gown holding a diploma",
+      "caption": "",
+      "highlight": true
+    },
+    {
+      "image": "/media/potrait-04.webp",
+      "alt": "Graduate wearing colourful academic stoles",
+      "caption": "",
+      "highlight": true
+    }
+  ]
+}

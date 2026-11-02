@@ -1,0 +1,35 @@
+{
+  "title": "Celebrations & gatherings",
+  "kind": "event",
+  "category": "People & events",
+  "published": true,
+  "order": 1,
+  "description": "Laughter, connection, and the people who make an occasion. A selection across celebrations and gatherings.",
+  "cover": "/media/potrait-07.webp",
+  "photos": [
+    {
+      "image": "/media/potrait-07.webp",
+      "alt": "Two children laughing together at a celebration",
+      "caption": "",
+      "highlight": true
+    },
+    {
+      "image": "/media/potrait-08.webp",
+      "alt": "A young girl in red and gold at a celebration",
+      "caption": "",
+      "highlight": true
+    },
+    {
+      "image": "/media/potrait-10.webp",
+      "alt": "Four men posing together at an indoor gathering",
+      "caption": "",
+      "highlight": true
+    },
+    {
+      "image": "/media/potrait-11.webp",
+      "alt": "A couple at an indoor celebration",
+      "caption": "",
+      "highlight": false
+    }
+  ]
+}

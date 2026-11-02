@@ -1,0 +1,13 @@
+# Local files and secrets
+.DS_Store
+.env
+.env.*
+!.env.example
+*.log
+node_modules/
+.venv/
+__pycache__/
+# Provider-specific credentials and deployment state
+.openai/
+# Local working files
+work/

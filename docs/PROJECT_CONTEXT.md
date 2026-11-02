@@ -49,3 +49,5 @@ Code commit `a0dcb71` passed 12 automated checks and a successful GitHub Pages d
 The owner dislikes diagonal arrow/emoji decoration, boxy controls, and the old framed slideshow. Remove decorative arrows from public copy and photo cards. Use native SVG Instagram/Facebook/mail icons with accessible labels. Buttons and filters use restrained rounded shapes. The opening is an automatically advancing horizontal strip: complete active photos at their original ratios, neighboring frames offering visual continuity, and a quiet progress indicator. Hover/focus/touch and reduced-motion preferences stop or suspend movement without a visible Play/Pause interface. Strong nature imagery leads, with events still immediately discoverable through navigation and the hero CTA.
 
 References reviewed: Jimmy Chin, Nadav Kander, Rinko Kawauchi. They inform image-led hierarchy and quiet navigation; do not copy their artwork or branding.
+
+Editorial refresh verified: code commit `0c9f67d`, 13 automated checks, and successful GitHub Pages deployment on 2026-11-01. Automatic progression and centering were checked at 1800px; phone layout and gallery controls at 320px/390px.

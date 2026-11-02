@@ -50,4 +50,4 @@ Last updated: 2026-11-01. Project context: [docs/PROJECT_CONTEXT.md](docs/PROJEC
 - [x] Use accessible native SVG Instagram, Facebook, and email icons.
 - [x] Remove repetitive “View photograph” hints and repeated photographer-name captions.
 - [x] Verify phone/desktop interaction, automatic advance, keyboard selection, gallery controls, and accessible icon labels.
-- [ ] Deploy and verify the editorial refresh on GitHub Pages.
+- [x] Deploy and verify the editorial refresh on GitHub Pages. Code commit `0c9f67d`; [successful deployment](https://github.com/lamsal9677/PhotographyPortfolio/actions/runs/41370674101).

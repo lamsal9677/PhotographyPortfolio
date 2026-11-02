@@ -56,3 +56,5 @@ Owner feedback: diagonal arrow decoration was excessive, the boxed slideshow fel
 - Removed repeated “View photograph” captions and hardcoded photographer-name labels.
 - Verified automatic progression, 320px/390px page widths, keyboard selection, collection opening, photo navigation, and SVG viewer controls.
 - Thirteen automated checks pass, including a regression check against arrow decoration and old player controls.
+
+Editorial deployment verified: https://github.com/lamsal9677/PhotographyPortfolio/actions/runs/41370674101 (code `0c9f67d`). Automatic progression was observed through multiple frames without interaction, with correct centering at 1800px.

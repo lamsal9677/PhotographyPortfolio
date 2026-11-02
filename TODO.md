@@ -65,3 +65,11 @@ Last updated: 2026-11-01. Project context: [docs/PROJECT_CONTEXT.md](docs/PROJEC
 - [x] Check phone layout without sending a live email.
 - [x] Deploy and verify this cleanup on GitHub Pages. Code commit `c4533b1`; [successful deployment](https://github.com/lamsal9677/PhotographyPortfolio/actions/runs/41378311635).
 - [ ] Confirm inbox delivery with a real submission when the owner sends one or explicitly requests a live test. No live test message has been sent automatically.
+
+## High-resolution photographs
+
+- [x] Match the owner's 54 high-resolution exports to existing media filenames.
+- [x] Preserve captions, stories, collection order, and original source folder.
+- [x] Generate thumbnail/page/native-resolution derivatives automatically from one CMS upload.
+- [x] Add a Full resolution link to the photograph viewer.
+- [ ] Verify and publish the high-resolution update.

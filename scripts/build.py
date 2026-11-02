@@ -3,13 +3,14 @@
 import argparse
 import hashlib
 import html
+import io
 import json
 import re
 import shutil
 from datetime import date
 from pathlib import Path
 from urllib.parse import urlsplit
-from PIL import Image, ImageOps
+from PIL import Image, ImageOps, ImageCms
 
 ROOT = Path(__file__).resolve().parents[1]
 Image.MAX_IMAGE_PIXELS = 60_000_000
@@ -113,14 +114,18 @@ def build(destination, include_drafts=False):
                 images[id]['caption'] = text(caption, 'Image caption')
             return id
         # Include processing settings in the cache key; process each source once.
-        digest = hashlib.sha256(path.read_bytes() + b'webp-2000-800-q88-q82-v2').hexdigest()[:20]
+        digest = hashlib.sha256(path.read_bytes() + b'webp-native94-2000-800-q88-q82-v3').hexdigest()[:20]
         id = 'p-' + digest
         if id not in images:
             full_cache = cache / (id + '.webp')
             small_cache = cache / (id + '-small.webp')
-            if not full_cache.exists() or not small_cache.exists():
+            native_cache = cache / (id + '-full.webp')
+            if not full_cache.exists() or not small_cache.exists() or not native_cache.exists():
                 with Image.open(path) as original:
                     im = ImageOps.exif_transpose(original).convert('RGB')
+                    if original.info.get('icc_profile'):
+                        im = ImageCms.profileToProfile(im, ImageCms.ImageCmsProfile(io.BytesIO(original.info['icc_profile'])), ImageCms.createProfile('sRGB'), outputMode='RGB')
+                    im.save(native_cache, 'WEBP', quality=94, method=6)
                     im.thumbnail((2000, 2000))
                     im.save(full_cache, 'WEBP', quality=88)
                     im.thumbnail((800, 800))
@@ -131,8 +136,12 @@ def build(destination, include_drafts=False):
                 sw = small_image.width
             shutil.copy2(full_cache, stage / 'photos' / full_cache.name)
             shutil.copy2(small_cache, stage / 'photos' / small_cache.name)
+            shutil.copy2(native_cache, stage / 'photos' / native_cache.name)
+            with Image.open(native_cache) as native_image:
+                native_size = list(native_image.size)
             sizes[id] = [w, h]
             images[id] = {'src': f'photos/{id}.webp', 'small': f'photos/{id}-small.webp', 'smallWidth': sw,
+                          'full': f'photos/{id}-full.webp', 'fullSize': native_size,
                           'category': category, 'caption': text(caption, 'Caption'), 'story': ''}
             descriptions[id] = text(alt, 'Image description') or 'Photograph by ' + settings['name']
         source_ids[source] = id

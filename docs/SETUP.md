@@ -84,3 +84,9 @@ Official references:
 - https://pagescms.org/docs/quick-start/
 - https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
 - https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site
+
+## Uploading high-quality photographs
+
+In Pages CMS, upload one highest-quality JPEG or PNG to Media, then select it in your collection or story. Save and publish as usual. Do not make thumbnails yourself. The build creates an 800px thumbnail, a 2000px page preview, and a native-resolution WebP viewing image at quality 94. It never enlarges a small source. Only opening a photograph requests the full-resolution image; the viewer also provides a Full resolution link for browser zoom.
+
+Use exported JPEG/PNG files rather than camera RAW files. Keep your original camera files backed up separately. Uploaded source files remain in the repository; generated web images have metadata removed. For the initial high-resolution import, the supplied JPEGs were converted to native-resolution quality-95 WebP sources with sRGB conversion when an embedded profile was present. The supplied JPEG folder was left unchanged.

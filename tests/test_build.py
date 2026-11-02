@@ -154,6 +154,19 @@ class ContentBuildTests(unittest.TestCase):
         self.write('content/collections/broken.json',{'title':'Broken','kind':'event','published':True,'photos':[]})
         with self.assertRaises(ValueError):self.run_build()
         self.assertEqual(before,(self.root/'_site/index.html').read_bytes())
+    def test_native_resolution_is_separate_from_fast_page_previews(self):
+        Image.new('RGB',(3600,2400),'green').save(self.root/'media/event.jpg')
+        self.run_build()
+        data=json.loads((self.root/'_site/assets/data.js').read_text().split('=',1)[1].rstrip(';'))
+        photo=next(p for p in data['images'].values() if p['category']=='People & events')
+        for key,expected in [('small',(800,533)),('src',(2000,1333)),('full',(3600,2400))]:
+            with Image.open(self.root/'_site'/photo[key]) as im:
+                self.assertEqual(im.size,expected)
+        self.assertEqual(photo['fullSize'],[3600,2400])
+        page=(self.root/'_site/work/index.html').read_text()
+        self.assertNotIn(photo['full']+' ',page)
+        self.assertIn('id="fullResolution"',page)
+
     def test_source_image_metadata_is_not_exported(self):
         self.run_build()
         for path in (self.root/'_site/photos').glob('*.webp'):

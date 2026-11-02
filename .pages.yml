@@ -84,7 +84,7 @@
           "name": "cover",
           "label": "Collection cover",
           "type": "image",
-          "description": "Choose a photograph that is also in this collection."
+          "description": "Upload your highest-quality JPEG or PNG. Publishing automatically creates fast previews and a full-resolution viewing version; no manual resizing needed."
         },
         {
           "name": "photos",
@@ -101,7 +101,8 @@
               "name": "image",
               "label": "Image",
               "type": "image",
-              "required": true
+              "required": true,
+              "description": "Upload your highest-quality JPEG or PNG. Publishing automatically creates fast previews and a full-resolution viewing version; no manual resizing needed."
             },
             {
               "name": "alt",
@@ -177,7 +178,8 @@
         {
           "name": "cover",
           "label": "Cover",
-          "type": "image"
+          "type": "image",
+          "description": "Upload your highest-quality JPEG or PNG. Publishing automatically creates fast previews and a full-resolution viewing version; no manual resizing needed."
         },
         {
           "name": "summary",
@@ -205,7 +207,8 @@
               "name": "image",
               "label": "Image",
               "type": "image",
-              "required": true
+              "required": true,
+              "description": "Upload your highest-quality JPEG or PNG. Publishing automatically creates fast previews and a full-resolution viewing version; no manual resizing needed."
             },
             {
               "name": "alt",
@@ -279,7 +282,8 @@
         {
           "name": "hero_event_image",
           "label": "Opening people photograph",
-          "type": "image"
+          "type": "image",
+          "description": "Upload your highest-quality JPEG or PNG. Publishing automatically creates fast previews and a full-resolution viewing version; no manual resizing needed."
         },
         {
           "name": "hero_nature_collection",
@@ -290,7 +294,8 @@
         {
           "name": "hero_nature_image",
           "label": "Opening nature photograph",
-          "type": "image"
+          "type": "image",
+          "description": "Upload your highest-quality JPEG or PNG. Publishing automatically creates fast previews and a full-resolution viewing version; no manual resizing needed."
         },
         {
           "name": "web3forms_access_key",

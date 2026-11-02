@@ -286,3 +286,5 @@ dialog::backdrop { background: #1c271fbd; backdrop-filter: blur(8px); }
   .form-actions { gap: 12px; }
   .form-submit { font-size: 11px; }
 }
+
+#fullResolution { color: inherit; text-decoration: underline; text-underline-offset: 4px; white-space: nowrap; }

@@ -83,7 +83,11 @@
     const id = lightPhotos[lightIndex];
     if (!id || !images[id]) return;
     const image = document.querySelector('#lightImage');
-    image.src = photo(id);
+    image.src = url(images[id].full);
+    image.decoding = 'async';
+    const fullLink = document.querySelector('#fullResolution');
+    fullLink.href = url(images[id].full);
+    fullLink.setAttribute('aria-label', `Open full resolution: ${alt(id)} (${images[id].fullSize.join(' × ')} pixels)`);
     image.alt = alt(id);
     document.querySelector('#lightCount').textContent = `${String(lightIndex + 1).padStart(2, '0')} / ${String(lightPhotos.length).padStart(2, '0')}`;
     const caption = document.querySelector('#lightCaption');

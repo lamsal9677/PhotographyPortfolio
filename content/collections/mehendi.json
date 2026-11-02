@@ -4,6 +4,7 @@
   "kind": "event",
   "category": "People & events",
   "order": 100,
+  "description": "A celebration of wedding",
   "cover": "/media/mehendi.jpg",
   "photos": [
     {

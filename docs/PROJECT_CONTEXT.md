@@ -39,3 +39,7 @@ The current iteration adds a pauseable opening slideshow, an all-photo archive w
 ## Working agreement
 
 Read this file and `TODO.md` at the start of future portfolio work. Pull main before editing so Pages CMS updates are preserved. Track completed work and remaining decisions in TODO.md. Keep frontend changes compatible with GitHub Pages project subpaths and future custom-domain hosting. Preserve the owner's biography edits. Expanded About content can wait for their input.
+
+## Latest verified release
+
+Code commit `a0dcb71` passed 12 automated checks and a successful GitHub Pages deployment on 2026-11-01. See `docs/AUDIT.md` for the browser verification log and TODO.md for pending owner content.

@@ -20,7 +20,7 @@ Last updated: 2026-11-01. Project context: [docs/PROJECT_CONTEXT.md](docs/PROJEC
 - [x] Make Back/Escape and shareable gallery URLs work predictably.
 - [x] Cache image processing for faster content-only builds.
 - [x] Complete desktop/phone user-flow verification and record findings.
-- [ ] Deploy and confirm the current version on GitHub Pages.
+- [x] Deploy and confirm the current version on GitHub Pages. Verified code commit `a0dcb71`; [successful deployment](https://github.com/lamsal9677/PhotographyPortfolio/actions/runs/41369066596).
 
 ## Next: content and owner input
 

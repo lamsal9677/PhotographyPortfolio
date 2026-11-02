@@ -40,3 +40,7 @@ Stories need real owner-written content; the existing blank draft should not be 
 - Opening slideshow Next changes image, label, and position; manual use pauses autoplay. Reduced motion disables autoplay/entrance effects by implementation; no OS preference was changed during testing.
 - Twelve automated build checks pass, including draft exclusion, safe story text, unique slides, story cover deduplication, asset versioning, cached images, and output validity.
 - Source story count is still zero published stories. No fictional story or personal background was added.
+
+## Deployment
+
+GitHub Actions build and Pages deployment succeeded for code commit `a0dcb71`: https://github.com/lamsal9677/PhotographyPortfolio/actions/runs/41369066596. The current site is https://lamsal9677.github.io/PhotographyPortfolio/ (not the older ChatGPT prototype).

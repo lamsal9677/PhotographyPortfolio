@@ -1,0 +1,25 @@
+{
+  "title": "Mehendi",
+  "published": true,
+  "kind": "event",
+  "category": "People & events",
+  "order": 100,
+  "cover": "/media/mehendi.jpg",
+  "photos": [
+    {
+      "image": "/media/mehendi.jpg",
+      "alt": "Bride and Groom",
+      "highlight": false
+    },
+    {
+      "image": "/media/potrait-10.webp",
+      "alt": "Guest ",
+      "highlight": false
+    },
+    {
+      "image": "/media/potrait-11.webp",
+      "alt": "Guest",
+      "highlight": false
+    }
+  ]
+}

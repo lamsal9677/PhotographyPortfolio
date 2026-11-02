@@ -1,0 +1,16 @@
+{
+  "title": "Test Event",
+  "published": true,
+  "kind": "event",
+  "category": "People & events",
+  "order": 101,
+  "description": "Hello world",
+  "cover": "/media/bird-01.webp",
+  "photos": [
+    {
+      "image": "/media/potrait-09.webp",
+      "alt": "Test",
+      "highlight": false
+    }
+  ]
+}

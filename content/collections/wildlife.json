@@ -1,8 +1,8 @@
 {
   "title": "Wildlife",
+  "published": true,
   "kind": "nature",
   "category": "Wildlife",
-  "published": true,
   "order": 5,
   "description": "Quiet encounters, expressive faces, and small moments of connection in the animal world.",
   "cover": "/media/wildlife-03.webp",
@@ -10,73 +10,66 @@
     {
       "image": "/media/wildlife-01.webp",
       "alt": "A tabby cat looking toward the camera in soft light",
-      "caption": "",
       "highlight": false
     },
     {
       "image": "/media/wildlife-02.webp",
       "alt": "A monkey resting near a stupa and colourful prayer flags",
-      "caption": "",
       "highlight": false
     },
     {
       "image": "/media/wildlife-03.webp",
       "alt": "Close portrait of a fox through soft foreground branches",
-      "caption": "",
       "highlight": true
     },
     {
       "image": "/media/wildlife-04.webp",
       "alt": "An adult monkey holding a baby",
-      "caption": "",
       "highlight": true
     },
     {
       "image": "/media/wildlife-05.webp",
       "alt": "A squirrel peering out from a wooden bird feeder",
-      "caption": "",
       "highlight": false
     },
     {
       "image": "/media/wildlife-06.webp",
       "alt": "An adult monkey carrying a baby beside a green path",
-      "caption": "",
+      "highlight": false
+    },
+    {
+      "image": "/media/fawn.jpg",
+      "alt": "A Fawn Eating - Golden Hour",
       "highlight": false
     },
     {
       "image": "/media/wildlife-07.webp",
       "alt": "Squirrel holding food in dappled light",
-      "caption": "",
       "highlight": false
     },
     {
       "image": "/media/wildlife-08.webp",
       "alt": "Two monkeys on a branch in warm sunlight",
-      "caption": "",
       "highlight": true
     },
     {
       "image": "/media/wildlife-09.webp",
       "alt": "A squirrel nestled among bare tree branches",
-      "caption": "",
       "highlight": false
     },
     {
       "image": "/media/wildlife-10.webp",
       "alt": "Two monkeys facing one another in soft backlight",
-      "caption": "",
       "highlight": true
     },
     {
       "image": "/media/wildlife-11.webp",
       "alt": "Young monkey perched against a softly blurred background",
-      "caption": "",
       "highlight": false
     },
     {
       "image": "/media/wildlife-12.webp",
       "alt": "A monkey tending to a baby in green surroundings",
-      "caption": "",
       "highlight": false
     }
   ]

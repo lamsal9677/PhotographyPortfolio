@@ -238,8 +238,16 @@ def build(destination, include_drafts=False):
             break
     if not slides:
         raise ValueError('Publish at least one collection to feature in the portfolio')
+    # Lead with a strong sense of place, then reveal people and wildlife.
+    if len(slides) > 1 and slides[0]['kind'] == 'event' and slides[1]['kind'] == 'nature':
+        slides[0], slides[1] = slides[1], slides[0]
     first_slide = slides[0]
-    hero = '<button class="slideshow-image" id="slideOpen" data-open-album="'+e(first_slide['collection'])+'" aria-label="Open '+e(first_slide['title'])+' collection">'+img(first_slide['image'], True)+'</button>'
+    hero = ''
+    for index,slide in enumerate(slides + slides):
+        id = slide['image']
+        w,h=sizes[id]
+        clone = index >= len(slides)
+        hero += '<button class="showcase-frame" data-showcase-index="'+str(index)+'" data-collection="'+e(slide['collection'])+'" aria-label="Open '+e(slide['title'])+' collection" '+('aria-hidden="true" tabindex="-1" ' if clone else '')+'style="--frame-width:'+str(w/h)+'">'+img(id,index==0)+'</button>'
     # Choose homepage highlights outside the opening sequence when alternatives exist.
     used_home = set(hero_ids)
     for cat in categories:
@@ -248,18 +256,27 @@ def build(destination, include_drafts=False):
         if choices:
             used_home.add(choices[0])
             albums['Selected']['featured'][categories.index(cat)] = choices[0]
-    events = ''.join(button(albums[k]['cover'], k, albums[k]['title'], f'<h3>{e(albums[k]["title"])}<span>↗</span></h3><div class="image-caption"><b>{len(albums[k]["featured"])} highlights</b><span>{len(albums[k]["all"])} photographs</span></div>') for k in event_keys)
+    events = ''.join(button(albums[k]['cover'], k, albums[k]['title'], f'<h3>{e(albums[k]["title"])}</h3><div class="image-caption"><b>{len(albums[k]["featured"])} highlights</b><span>{len(albums[k]["all"])} photographs</span></div>') for k in event_keys)
     tabs = ''.join(f'<button class="{("active" if i == 0 else "")}" aria-pressed="{str(i == 0).lower()}" data-category="{e(cat)}">{e(cat)}</button>' for i, cat in enumerate(['Selected'] + categories))
     cards = ''.join(f'<a class="story-card" href="{s["url"]}">{img(s["coverId"])}<div class="story-meta">{e(s.get("category", "Field notes"))}</div><h3>{e(s["title"])}</h3><p>{e(s.get("summary", ""))}</p></a>' for s in story_records)
-    story_section = '<section id="stories"><div class="sectionhead"><h2>Stories behind the photographs</h2><a href="stories/">All stories ↗</a></div><div class="story-grid">'+cards+'</div></section>' if cards else ''
+    story_section = '<section id="stories"><div class="sectionhead"><h2>Stories behind the photographs</h2><a href="stories/">All stories</a></div><div class="story-grid">'+cards+'</div></section>' if cards else ''
     all_ids = list(images)
     albums['All'] = {'title':'All photographs','kind':'all','type':'The complete portfolio','description':'Browse every published photograph.','all':all_ids,'featured':all_ids}
     dataset = json.dumps({'slides': slides, 'albums': albums, 'sizes': sizes, 'descriptions': descriptions, 'images': images, 'settings': settings}, ensure_ascii=False).replace('<', chr(92)+'u003c').replace(chr(0x2028), chr(92)+'u2028').replace(chr(0x2029), chr(92)+'u2029')
     first = next(iter(images), None)
+    icon_paths = {
+        'instagram':'<rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r=".8" fill="currentColor" stroke="none"/>',
+        'facebook':'<path d="M14 21v-8h3l.5-4H14V7c0-1.2.4-2 2-2h2V1.5C17.2 1.2 16.1 1 15 1c-3.2 0-5 1.9-5 5v3H7v4h3v8Z" fill="currentColor" stroke="none"/>',
+        'email':'<rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/>'
+    }
+    def icon(name):
+        return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">'+icon_paths[name]+'</svg>'
+    social_icons = ''.join('<a class="social-icon" href="'+e(href)+'" aria-label="'+label+'" title="'+label+'"'+(' target="_blank" rel="noopener"' if name != 'email' else '')+'>'+icon(name)+'</a>' for name,label,href in [('instagram','Instagram',settings['instagram']),('facebook','Facebook',settings['facebook']),('email','Email '+settings['name'],'mailto:'+settings['email'])] if href)
+    mail_cta = '<a class="contact-cta" href="mailto:'+e(settings['email'])+'" aria-label="Email '+e(settings['name'])+'">'+icon('email')+'<span>Let’s talk</span></a>'
     replacements = {'NAME':e(settings['name']), 'EMAIL':e(settings['email']), 'HEADLINE':'<br>'.join(e(settings['headline']).splitlines()),
                     'BIO':e(settings['bio']), 'INSTAGRAM':e(settings['instagram']), 'FACEBOOK':e(settings['facebook']),
                     'HERO':hero, 'EVENTS':events, 'TABS':tabs, 'STORIES':story_section, 'STORY_NAV':'<a href="#stories">Field notes</a>' if cards else '',
-                    'OG_IMAGE':e(settings['site_url']+'/'+images[first_slide['image']]['src']) if first else '', 'YEAR':str(date.today().year), 'DATA':dataset, 'DIALOGS':(ROOT / 'templates/dialogs.html').read_text().replace('{{NAME}}',e(settings['name']))}
+                    'OG_IMAGE':e(settings['site_url']+'/'+images[first_slide['image']]['src']) if first else '', 'YEAR':str(date.today().year), 'DATA':dataset, 'SOCIAL_ICONS':social_icons, 'MAIL_CTA':mail_cta, 'DIALOGS':(ROOT / 'templates/dialogs.html').read_text().replace('{{NAME}}',e(settings['name']))}
     template = (ROOT / 'templates/index.html').read_text()
     output = re.sub(r'\{\{([A-Z_]+)\}\}', lambda m: replacements[m[1]], template)
     (stage / 'index.html').write_text(output)
@@ -270,26 +287,26 @@ def build(destination, include_drafts=False):
     def nav(prefix=''):
         return '<header class="nav"><a class="brand" href="'+prefix+'">'+e(settings['name'])+'<span>Photography</span></a><nav class="navlinks" aria-label="Main navigation"><a href="'+prefix+'work/">All work</a><a href="'+prefix+'#people">People & events</a><a href="'+prefix+'stories/">Stories</a><a href="'+prefix+'#about">About & contact</a></nav></header>'
     def page(title, body, prefix='../', scripts='', data=False):
-        return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#dfe2da"><title>'+e(title)+' — '+e(settings['name'])+'</title><meta name="description" content="Photography, events, wildlife and stories by '+e(settings['name'])+'"><link rel="stylesheet" href="'+prefix+'assets/site.css"></head><body>'+nav(prefix)+body+'<footer><span>© '+str(date.today().year)+' '+e(settings['name'])+'</span><a href="'+prefix+'#about">Get in touch ↗</a></footer>'+('<script src="'+prefix+'assets/data.js"></script>' if data else '')+scripts+'</body></html>'
+        return '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600&display=swap" rel="stylesheet"><meta name="theme-color" content="#dfe2da"><title>'+e(title)+' — '+e(settings['name'])+'</title><meta name="description" content="Photography, events, wildlife and stories by '+e(settings['name'])+'"><link rel="stylesheet" href="'+prefix+'assets/site.css"></head><body>'+nav(prefix)+body+'<footer><span>© '+str(date.today().year)+' '+e(settings['name'])+'</span><a href="'+prefix+'#about">Get in touch</a></footer>'+('<script src="'+prefix+'assets/data.js"></script>' if data else '')+scripts+'</body></html>'
     dialogs = (ROOT / 'templates/dialogs.html').read_text().replace('{{NAME}}', e(settings['name']))
     work_dir = stage / 'work';work_dir.mkdir()
     work_filters = ''.join('<button data-work-filter="'+e(cat)+'" aria-pressed="'+str(i==0).lower()+'" class="'+('active' if i==0 else '')+'">'+e('Nature' if cat == 'nature' else cat)+'</button>' for i,cat in enumerate(['All','People & events','nature']+categories))
     all_rows = ''
     for index in range(0,len(all_ids),2):
         pair = all_ids[index:index+2]
-        all_rows += '<div class="photo-row">' + ''.join(button(id,'All',descriptions[id],'<div class="image-caption"><b>'+e(images[id]['category'] or 'Photograph')+'</b><span>View photograph ↗</span></div>',prefix='../') for id in pair) + '</div>'
+        all_rows += '<div class="photo-row">' + ''.join(button(id,'All',descriptions[id],'<div class="image-caption"><b>'+e(images[id]['category'] or 'Photograph')+'</b></div>',prefix='../') for id in pair) + '</div>'
     work_body = '<main class="archive-page"><div class="page-heading"><span class="eyebrow">The complete portfolio</span><h1>All photographs.</h1><p>People, places, and the natural world. Every published frame, in one place.</p></div><div class="archive-tools"><div class="tabs" aria-label="Filter photographs">'+work_filters+'</div><label class="search-label">Search photographs<input id="photoSearch" type="search" placeholder="Search captions and descriptions" autocomplete="off"></label></div><div class="results-bar"><p id="workCount" role="status">'+str(len(all_ids))+' photographs</p><button id="resetFilters" class="text-button">Reset filters</button></div><div class="nature-rows" id="allPhotos">'+all_rows+'</div><p class="empty-state" id="noResults" hidden>No photographs match. Try another search or reset the filters.</p></main>'+dialogs
     (work_dir / 'index.html').write_text(page('All photographs',work_body,scripts='<script src="../assets/gallery.js" defer></script>',data=True))
     story_dir=stage/'stories';story_dir.mkdir(exist_ok=True)
     story_cards=''.join('<a class="story-card" href="'+e(s['slug'])+'/">'+img(s['coverId'], prefix='../')+'<div class="story-meta">'+e(s.get('category','Field notes'))+'</div><h2>'+e(s['title'])+'</h2><p>'+e(s.get('summary',''))+'</p></a>' for s in story_records)
-    empty='<div class="empty-story"><h2>The photographs are here.<br>Their stories will follow.</h2><p>No stories have been published yet. Come back for field notes, encounters, and the moments behind the frame.</p><a class="button-link" href="../work/">Explore the photographs ↗</a></div>'
+    empty='<div class="empty-story"><h2>The photographs are here.<br>Their stories will follow.</h2><p>No stories have been published yet. Come back for field notes, encounters, and the moments behind the frame.</p><a class="button-link" href="../work/">Explore the photographs</a></div>'
     (story_dir/'index.html').write_text(page('Stories','<main class="archive-page"><div class="page-heading"><span class="eyebrow">Field notes & encounters</span><h1>Behind the frame.</h1><p>Stories from nature, travel, and time spent photographing people.</p></div>'+('<div class="story-grid">'+story_cards+'</div>' if story_records else empty)+'</main>'))
     for s in story_records:
         folder = story_dir / s['slug'];folder.mkdir(parents=True)
         meta = ' · '.join(e(x) for x in [s['date'], s['location']] if x)
         # The opening photograph is not repeated again in the story gallery.
         figures = ''.join('<figure>'+img(id, prefix='../../')+'<figcaption>'+e(images[id]['caption'])+'</figcaption></figure>' for id in dict.fromkeys(s['gallery']) if id != s['coverId'])
-        article='<main class="story-article"><a class="backlink" href="../">← All stories</a><div class="story-meta">'+e(s.get('category','Field notes'))+'</div><h1>'+e(s['title'])+'</h1><div class="story-meta">'+meta+'</div>'+img(s['coverId'],True,'../../')+'<div class="prose">'+paragraphs(s['body'])+'</div>'+figures+'<div class="story-end"><a href="../../work/">Explore all photographs ↗</a><a href="mailto:'+e(settings['email'])+'">Work with me ↗</a></div></main>'
+        article='<main class="story-article"><a class="backlink" href="../">All stories</a><div class="story-meta">'+e(s.get('category','Field notes'))+'</div><h1>'+e(s['title'])+'</h1><div class="story-meta">'+meta+'</div>'+img(s['coverId'],True,'../../')+'<div class="prose">'+paragraphs(s['body'])+'</div>'+figures+'<div class="story-end"><a href="../../work/">Explore all photographs</a><a href="mailto:'+e(settings['email'])+'">Work with me</a></div></main>'
         (folder/'index.html').write_text(page(s['title'],article,prefix='../../'))
     # Bust browser caches when any frontend asset or content manifest changes.
     versions = {name:hashlib.sha256((stage/'assets'/name).read_bytes()).hexdigest()[:12] for name in ['site.css','gallery.js','data.js']}

@@ -69,10 +69,10 @@
       const foot = document.querySelector('#albumfoot');
       const contact = document.createElement('a');
       contact.href = 'mailto:' + settings.email + '?subject=Photography%20inquiry';
-      contact.textContent = a.kind === 'event' ? 'Inquire about your occasion ↗' : 'Get in touch ↗';
+      contact.textContent = a.kind === 'event' ? 'Inquire about your occasion' : 'Get in touch';
       const browse = document.createElement('a');
       browse.href = url(a.kind === 'event' ? 'work/?category=nature' : 'work/');
-      browse.textContent = a.kind === 'event' ? 'Explore landscape & wildlife ↗' : 'Browse all photographs ↗';
+      browse.textContent = a.kind === 'event' ? 'Explore landscape & wildlife' : 'Browse all photographs';
       foot.replaceChildren(contact, browse);
       renderAlbum();
       album.scrollTop = 0;
@@ -92,7 +92,7 @@
     if (images[id].story) {
       const link = document.createElement('a');
       link.href = url(images[id].story);
-      link.textContent = 'Read the story ↗';
+      link.textContent = 'Read the story';
       caption.append(link);
     }
     if (lightPhotos.length > 1) {
@@ -188,9 +188,9 @@
   function renderNature() {
     const a = albums[activeNature];
     if (!natureGrid || !a) return;
-    rows(natureGrid, a.featured, id => openLight(a.all, id, a.title), id => `<div class="image-caption"><b>${esc(activeNature === 'Selected' ? images[id].category : settings.name)}</b><span>View photograph ↗</span></div>`);
+    rows(natureGrid, a.featured, id => openLight(a.all, id, a.title), id => activeNature === 'Selected' ? `<div class="image-caption"><b>${esc(images[id].category)}</b></div>` : (images[id].caption ? `<div class="image-caption">${esc(images[id].caption)}</div>` : ''));
     document.querySelector('#natureNote').textContent = activeNature === 'Selected' ? 'A few selected frames' : `${a.all.length} photographs`;
-    document.querySelector('#natureAlbum').textContent = activeNature === 'Selected' ? 'Explore the nature collection ↗' : `Explore ${activeNature.toLowerCase()} ↗`;
+    document.querySelector('#natureAlbum').textContent = activeNature === 'Selected' ? 'Explore the nature collection' : `Explore ${activeNature.toLowerCase()}`;
   }
   document.querySelectorAll('[data-category]').forEach(button => button.onclick = () => {
     activeNature = button.dataset.category;
@@ -224,7 +224,7 @@
       });
       document.querySelector('#workCount').textContent = `${ids.length} photograph${ids.length === 1 ? '' : 's'}${filter === 'All' ? '' : ' · ' + (filter === 'nature' ? 'Nature' : filter)}`;
       document.querySelector('#noResults').hidden = ids.length > 0;
-      rows(allPhotos, ids, id => openLight(ids, id, filter === 'All' ? 'All photographs' : filter), id => `<div class="image-caption"><b>${esc(images[id].category || 'Photograph')}</b><span>${images[id].story ? 'Story available · ' : ''}View photograph ↗</span></div>`);
+      rows(allPhotos, ids, id => openLight(ids, id, filter === 'All' ? 'All photographs' : filter), id => `<div class="image-caption"><b>${esc(images[id].category || 'Photograph')}</b>${images[id].story ? '<span>Story available</span>' : ''}</div>`);
     }
     document.querySelectorAll('[data-work-filter]').forEach(button => button.onclick = () => {
       filter = button.dataset.workFilter;
@@ -244,70 +244,86 @@
     renderWork();
   }
 
-  /* A controlled slideshow: pauses on interaction, hidden tabs, and reduced motion. */
-  const slideOpen = document.querySelector('#slideOpen');
-  if (slideOpen && slides.length) {
+  /* A quiet, automatically advancing photographic strip. Interaction stops motion. */
+  const rail = document.querySelector('#showcaseRail');
+  if (rail && slides.length) {
+    const frames = [...rail.querySelectorAll('.showcase-frame')];
     let index = 0;
     let playing = !reducedMotion.matches;
     let hovering = false;
     let onScreen = true;
-    let request = 0;
     let timer;
-    const play = document.querySelector('#slidePlay');
-    const image = slideOpen.querySelector('img');
+    let resetTimer;
+    let scrolling = false;
+    const progress = document.querySelector('#showcaseProgress');
+    progress.innerHTML = slides.map((_,i) => `<span class="${i===0?'active':''}"></span>`).join('');
+    function describe(next) {
+      index = ((next % slides.length) + slides.length) % slides.length;
+      const slide = slides[index];
+      document.querySelector('#showcaseKind').textContent = slide.kind === 'event' ? 'People & events' : 'The natural world';
+      document.querySelector('#showcaseCollection').textContent = slide.title;
+      document.querySelector('#showcaseCount').textContent = String(index + 1).padStart(2,'0') + ' / ' + String(slides.length).padStart(2,'0');
+      [...progress.children].forEach((span,i) => span.classList.toggle('active',i===index));
+    }
+    function target(frame) {
+      return Math.max(0, frame.offsetLeft - (rail.clientWidth - frame.clientWidth) / 2);
+    }
     function schedule() {
       clearTimeout(timer);
-      play.textContent = playing ? 'Pause' : 'Play';
-      play.setAttribute('aria-label', playing ? 'Pause slideshow' : 'Play slideshow');
-      if (playing && !hovering && onScreen && !document.hidden && !album?.open && !lightbox?.open) timer = setTimeout(() => show(index + 1), 6500);
+      if (playing && !hovering && onScreen && !document.hidden && !album?.open && !lightbox?.open) timer = setTimeout(advance,5200);
     }
-    async function show(next) {
-      const token = ++request;
-      const nextIndex = (next + slides.length) % slides.length;
-      const slide = slides[nextIndex];
-      const preload = new Image();
-      preload.src = photo(slide.image);
-      try { await preload.decode(); } catch { schedule(); return; }
-      if (token !== request) return;
-      index = nextIndex;
-      const [w, h] = sizes[slide.image];
-      image.removeAttribute('srcset');
-      image.src = preload.src;
-      image.width = w; image.height = h; image.alt = alt(slide.image);
-      if (!reducedMotion.matches && image.animate) image.animate([{ opacity: .2 }, { opacity: 1 }], { duration: 500, easing: 'ease-out' });
-      slideOpen.setAttribute('aria-label', `Open ${slide.title} collection`);
-      document.querySelector('#slideKind').textContent = slide.kind === 'event' ? 'People & events' : 'The natural world';
-      document.querySelector('#slideCollection').textContent = slide.title + ' ↗';
-      document.querySelector('#slideCount').textContent = `${String(index + 1).padStart(2, '0')} / ${String(slides.length).padStart(2, '0')}`;
-      if (!playing) document.querySelector('#slideAnnouncement').textContent = `${slide.title}, photograph ${index + 1} of ${slides.length}`;
-      schedule();
+    function show(next, automatic=false) {
+      clearTimeout(resetTimer);
+      const rendered = automatic && next === slides.length ? slides.length : ((next % slides.length) + slides.length) % slides.length;
+      const frame = frames[rendered];
+      if (!frame) return;
+      scrolling = true;
+      const left = rendered >= slides.length ? Math.max(0,frame.offsetLeft-parseFloat(getComputedStyle(rail).paddingLeft)) : target(frame);
+      rail.scrollTo({left,behavior:reducedMotion.matches?'instant':'smooth'});
+      describe(rendered);
+      resetTimer = setTimeout(() => {
+        if (rendered >= slides.length) rail.scrollTo({left:target(frames[0]),behavior:'instant'});
+        scrolling = false;
+        schedule();
+      },reducedMotion.matches?0:850);
     }
-    slideOpen.onclick = () => { playing = false; schedule(); openAlbum(slides[index].collection); };
-    document.querySelector('#slideCollection').onclick = slideOpen.onclick;
-    document.querySelector('#slidePrev').onclick = () => { playing = false; show(index - 1); };
-    document.querySelector('#slideNext').onclick = () => { playing = false; show(index + 1); };
-    play.onclick = () => { playing = !playing; schedule(); };
-    const carousel = document.querySelector('.slideshow');
-    carousel.addEventListener('pointerenter', () => { hovering = true; schedule(); });
-    carousel.addEventListener('pointerleave', () => { hovering = false; schedule(); });
-    carousel.addEventListener('focusin', () => { playing = false; schedule(); });
-    carousel.addEventListener('keydown', event => {
-      if (event.key === 'ArrowLeft' || event.key === 'ArrowRight') {
-        event.preventDefault(); playing = false;
-        show(index + (event.key === 'ArrowLeft' ? -1 : 1));
+    function advance() { show(index + 1,true); }
+    function stop() { playing = false; clearTimeout(timer); }
+    frames.forEach(frame => frame.onclick = () => { stop(); openAlbum(frame.dataset.collection); });
+    document.querySelector('#showcaseCollection').onclick = () => { stop(); openAlbum(slides[index].collection); };
+    rail.addEventListener('pointerdown',stop,{passive:true});
+    rail.addEventListener('touchstart',stop,{passive:true});
+    rail.addEventListener('wheel',stop,{passive:true});
+    rail.addEventListener('focusin',stop);
+    rail.addEventListener('pointerenter',() => { hovering=true;clearTimeout(timer); });
+    rail.addEventListener('pointerleave',() => { hovering=false;schedule(); });
+    rail.addEventListener('keydown',event => {
+      if (event.key==='ArrowLeft'||event.key==='ArrowRight') {
+        event.preventDefault();stop();show(index+(event.key==='ArrowLeft'?-1:1));
       }
+      if (event.key==='Escape') stop();
     });
-    if ('IntersectionObserver' in window) {
-      const visibility = new IntersectionObserver(entries => { onScreen = entries[0].isIntersecting; schedule(); });
-      visibility.observe(carousel);
+    let scrollTimer;
+    rail.addEventListener('scroll',() => {
+      clearTimeout(scrollTimer);
+      if (scrolling) return;
+      scrollTimer=setTimeout(() => {
+        const middle=rail.scrollLeft+rail.clientWidth/2;
+        let closest=0,distance=Infinity;
+        frames.forEach((frame,i) => {
+          const delta=Math.abs(frame.offsetLeft+frame.clientWidth/2-middle);
+          if(delta<distance){closest=i;distance=delta;}
+        });
+        describe(closest);
+      },100);
+    },{passive:true});
+    if('IntersectionObserver' in window) {
+      const observer=new IntersectionObserver(entries=>{onScreen=entries[0].isIntersecting;schedule();});
+      observer.observe(rail);
     }
-    document.addEventListener('visibilitychange', schedule);
-    reducedMotion.addEventListener('change', () => { if (reducedMotion.matches) playing = false; schedule(); });
-    const initial = slides[0];
-    document.querySelector('#slideKind').textContent = initial.kind === 'event' ? 'People & events' : 'The natural world';
-    document.querySelector('#slideCollection').textContent = initial.title + ' ↗';
-    document.querySelector('#slideCount').textContent = `01 / ${String(slides.length).padStart(2, '0')}`;
-    schedule();
+    document.addEventListener('visibilitychange',schedule);
+    reducedMotion.addEventListener('change',()=>{if(reducedMotion.matches)stop();});
+    describe(0);schedule();
   }
   if (!reducedMotion.matches && 'IntersectionObserver' in window) {
     const observer = new IntersectionObserver(entries => entries.forEach(entry => {

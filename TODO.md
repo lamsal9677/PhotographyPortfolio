@@ -38,3 +38,16 @@ Last updated: 2026-11-01. Project context: [docs/PROJECT_CONTEXT.md](docs/PROJEC
 - [ ] Consider richer story formatting and multiple related stories per photograph when content warrants it.
 - [ ] Consider a dedicated image service only if the portfolio outgrows repository/site limits.
 - [ ] Add a real booking/contact form only if the owner wants more than email inquiries.
+
+## Editorial refresh — automatic showcase and interface
+
+- [x] Review established photographer portfolios for visual reference.
+- [x] Remove decorative diagonal arrows from links, captions, and photo cards.
+- [x] Replace the framed opening slideshow with an automatic editorial photo strip.
+- [x] Remove visible Play/Pause/Previous/Next player controls from the opening.
+- [x] Keep keyboard/touch browsing, reduced-motion support, and automatic off-screen suspension.
+- [x] Restyle buttons, filters, search, and viewer controls consistently.
+- [x] Use accessible native SVG Instagram, Facebook, and email icons.
+- [x] Remove repetitive “View photograph” hints and repeated photographer-name captions.
+- [x] Verify phone/desktop interaction, automatic advance, keyboard selection, gallery controls, and accessible icon labels.
+- [ ] Deploy and verify the editorial refresh on GitHub Pages.

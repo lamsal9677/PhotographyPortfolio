@@ -61,7 +61,7 @@ All photographs are by Sanskar Lamsal. All rights reserved. Access to this repos
 
 - `work/`: every published photograph, with category filters and search.
 - `stories/`: always available; shows published stories or an honest empty state.
-- Opening slideshow: mixes event and nature highlights; pauses for interaction and reduced-motion preferences.
+- Opening photo strip: automatically mixes nature and event highlights without visible playback controls; interaction and reduced-motion preferences stop movement.
 - Gallery URLs support sharing and browser Back; the photo viewer remains dark for comfortable viewing.
 - `TODO.md`: tracked work and owner-input items.
 - `docs/PROJECT_CONTEXT.md`: decisions, source-of-truth hosting, and constraints for future edits.

@@ -32,9 +32,9 @@ There are currently 54 unique photographs in seven collections: three people/eve
 
 ## Design requirements and history
 
-The owner rejected stock photographs, a fictional studio brand, excessive white space, overly dark presentation, forced photo crops, and awkward mobile layouts. Preserve original photograph proportions. Current direction is a medium sage/stone surface, readable dark type, and a darker mat for the slideshow and full-screen viewer. Keep the work central, copy restrained, and navigation visible on phones.
+The owner rejected stock photographs, a fictional studio brand, excessive white space, overly dark presentation, forced photo crops, and awkward mobile layouts. Preserve original photograph proportions. Current direction is a medium sage/stone surface, readable dark type, with an unboxed, automatic photographic strip at the top. Keep only the full-screen viewer dark. Keep the work central, copy restrained, and navigation visible on phones.
 
-The current iteration adds a pauseable opening slideshow, an all-photo archive with filters/search, an always-visible Stories destination, subtle reduced-motion-aware animation, URL-backed galleries, and image-build caching. Do not silently reintroduce dark-all-over styling or fixed object-fit:cover crops for the photography.
+The current iteration uses an automatically advancing native-ratio photo strip with no visible playback controls, an all-photo archive with filters/search, an always-visible Stories destination, subtle reduced-motion-aware animation, URL-backed galleries, and image-build caching. Do not silently reintroduce dark-all-over styling or fixed object-fit:cover crops for the photography.
 
 ## Working agreement
 
@@ -43,3 +43,9 @@ Read this file and `TODO.md` at the start of future portfolio work. Pull main be
 ## Latest verified release
 
 Code commit `a0dcb71` passed 12 automated checks and a successful GitHub Pages deployment on 2026-11-01. See `docs/AUDIT.md` for the browser verification log and TODO.md for pending owner content.
+
+## Editorial refresh direction
+
+The owner dislikes diagonal arrow/emoji decoration, boxy controls, and the old framed slideshow. Remove decorative arrows from public copy and photo cards. Use native SVG Instagram/Facebook/mail icons with accessible labels. Buttons and filters use restrained rounded shapes. The opening is an automatically advancing horizontal strip: complete active photos at their original ratios, neighboring frames offering visual continuity, and a quiet progress indicator. Hover/focus/touch and reduced-motion preferences stop or suspend movement without a visible Play/Pause interface. Strong nature imagery leads, with events still immediately discoverable through navigation and the hero CTA.
+
+References reviewed: Jimmy Chin, Nadav Kander, Rinko Kawauchi. They inform image-led hierarchy and quiet navigation; do not copy their artwork or branding.

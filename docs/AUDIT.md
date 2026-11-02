@@ -44,3 +44,15 @@ Stories need real owner-written content; the existing blank draft should not be 
 ## Deployment
 
 GitHub Actions build and Pages deployment succeeded for code commit `a0dcb71`: https://github.com/lamsal9677/PhotographyPortfolio/actions/runs/41369066596. The current site is https://lamsal9677.github.io/PhotographyPortfolio/ (not the older ChatGPT prototype).
+
+## Editorial follow-up — 2026-11-01
+
+Owner feedback: diagonal arrow decoration was excessive, the boxed slideshow felt dated, and controls needed a more contemporary style.
+
+- Reviewed Jimmy Chin, Nadav Kander, and Rinko Kawauchi as image-led portfolio references.
+- Replaced the framed player with an automatically advancing photo strip, starting with the mountain photograph. Adjacent frames remain visible; the active photograph retains its proportions.
+- Removed visible opening playback controls and all decorative diagonal arrows from generated pages and frontend copy.
+- Used SVG Instagram, Facebook, and mail icons with accessible names. Contact and filter controls now use consistent rounded styling.
+- Removed repeated “View photograph” captions and hardcoded photographer-name labels.
+- Verified automatic progression, 320px/390px page widths, keyboard selection, collection opening, photo navigation, and SVG viewer controls.
+- Thirteen automated checks pass, including a regression check against arrow decoration and old player controls.

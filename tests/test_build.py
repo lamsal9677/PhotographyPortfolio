@@ -105,6 +105,17 @@ class ContentBuildTests(unittest.TestCase):
         self.assertIn('../assets/site.css?v=',(self.root/'_site/work/index.html').read_text())
         self.assertIn('<img ',(self.root/'_site/work/index.html').read_text())
 
+    def test_editorial_showcase_and_social_icons_replace_player_chrome(self):
+        self.run_build()
+        page=(self.root/'_site/index.html').read_text()
+        self.assertIn('id="showcaseRail"',page)
+        self.assertNotIn('slidePlay',page)
+        self.assertIn('class="contact-cta"',page)
+        self.assertIn('aria-label="Email Photographer"',page)
+        self.assertIn('<svg ',page)
+        for built in (self.root/'_site').rglob('*.html'):
+            self.assertNotIn('↗',built.read_text())
+
     def test_outside_media_path_is_rejected(self):
         with self.assertRaises(ValueError):builder.safe_image_path('../secret.jpg')
         with self.assertRaises(ValueError):builder.safe_image_path('/etc/passwd')

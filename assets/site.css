@@ -288,3 +288,4 @@ dialog::backdrop { background: #1c271fbd; backdrop-filter: blur(8px); }
 }
 
 #fullResolution { color: inherit; text-decoration: underline; text-underline-offset: 4px; white-space: nowrap; }
+#lightImage { background-position: center; background-size: contain; background-repeat: no-repeat; }

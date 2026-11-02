@@ -69,3 +69,9 @@ Editorial deployment verified: https://github.com/lamsal9677/PhotographyPortfoli
 - Seven simulated form tests cover request shape, validation, service failures, malformed responses, rate limits, network errors, confirmed success/reset behavior, and duplicate submissions.
 - Desktop and 320px browser checks verified native empty/invalid-email validation and no horizontal overflow. No live message was submitted.
 - A server-side non-submitting OPTIONS probe was rejected by Web3Forms' client-only restriction; that probe does not verify browser delivery. End-to-end inbox confirmation remains an explicit owner test item.
+
+## Native-resolution image update - 2026-11-01
+
+Imported all 54 matching photographs from Documents/Codex/fulls after comparing small normalized image samples to existing media. Native dimensions were preserved; original JPEG folder was not modified. Media exports total about 142 MB. Build generates 800px and 2000px previews plus native-resolution quality-94 WebP; embedded source profiles are converted to sRGB and public derivatives omit EXIF. CMS image-field help explains the one-upload workflow.
+
+Validation: 16 Python tests and 7 JavaScript contact tests pass. Browser at desktop and 390px phone confirmed the viewer loads 4786x3191 and 5184x3456 files, keeps original aspect ratios, and has Full resolution plus previous/next controls. Small preview backgrounds provide immediate context while a viewing file loads. No camera RAW files or LFS pointers were added.

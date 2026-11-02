@@ -72,4 +72,4 @@ Last updated: 2026-11-01. Project context: [docs/PROJECT_CONTEXT.md](docs/PROJEC
 - [x] Preserve captions, stories, collection order, and original source folder.
 - [x] Generate thumbnail/page/native-resolution derivatives automatically from one CMS upload.
 - [x] Add a Full resolution link to the photograph viewer.
-- [ ] Verify and publish the high-resolution update.
+- [x] Verify and publish the high-resolution update. Code `a69e66e`; [successful deployment](https://github.com/lamsal9677/PhotographyPortfolio/actions/runs/41379782064).

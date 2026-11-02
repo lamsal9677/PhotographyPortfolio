@@ -83,6 +83,7 @@
     const id = lightPhotos[lightIndex];
     if (!id || !images[id]) return;
     const image = document.querySelector('#lightImage');
+    image.style.backgroundImage = `url("${photo(id, true)}")`;
     image.src = url(images[id].full);
     image.decoding = 'async';
     const fullLink = document.querySelector('#fullResolution');

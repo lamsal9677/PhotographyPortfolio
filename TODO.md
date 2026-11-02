@@ -63,5 +63,5 @@ Last updated: 2026-11-01. Project context: [docs/PROJECT_CONTEXT.md](docs/PROJEC
 - [x] Route primary inquiry links to the form and keep direct email as an option.
 - [x] Test required-field validation, success/error handling, duplicate-submit prevention, and message retention with simulated responses.
 - [x] Check phone layout without sending a live email.
-- [ ] Deploy and verify this cleanup on GitHub Pages.
+- [x] Deploy and verify this cleanup on GitHub Pages. Code commit `c4533b1`; [successful deployment](https://github.com/lamsal9677/PhotographyPortfolio/actions/runs/41378311635).
 - [ ] Confirm inbox delivery with a real submission when the owner sends one or explicitly requests a live test. No live test message has been sent automatically.

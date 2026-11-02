@@ -15,3 +15,4 @@ work/
 # Generated static output
 _site/
 _site-building/
+.cache/

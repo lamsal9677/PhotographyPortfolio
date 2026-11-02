@@ -56,3 +56,15 @@ Do not run `--include-drafts` for public publishing. It is a local preview flag;
 ## Rights
 
 All photographs are by Sanskar Lamsal. All rights reserved. Access to this repository does not grant permission to reuse the photographs.
+
+## Current navigation and project tracking
+
+- `work/`: every published photograph, with category filters and search.
+- `stories/`: always available; shows published stories or an honest empty state.
+- Opening slideshow: mixes event and nature highlights; pauses for interaction and reduced-motion preferences.
+- Gallery URLs support sharing and browser Back; the photo viewer remains dark for comfortable viewing.
+- `TODO.md`: tracked work and owner-input items.
+- `docs/PROJECT_CONTEXT.md`: decisions, source-of-truth hosting, and constraints for future edits.
+- `docs/AUDIT.md`: usability findings and verification notes.
+
+The old ChatGPT-hosted prototype URL is independent of GitHub Pages. Edits saved through Pages CMS and pushes to this repository update GitHub Pages, not that older prototype.

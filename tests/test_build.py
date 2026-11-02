@@ -19,7 +19,8 @@ class ContentBuildTests(unittest.TestCase):
         builder.ROOT = self.root
         for folder in ['content/collections','content/stories','media','assets','templates']:
             (self.root / folder).mkdir(parents=True)
-        shutil.copy2(REPO / 'templates/index.html', self.root / 'templates/index.html')
+        shutil.copytree(REPO / 'templates', self.root / 'templates', dirs_exist_ok=True)
+        shutil.copytree(REPO / 'assets', self.root / 'assets', dirs_exist_ok=True)
         Image.new('RGB', (1200,800), 'red').save(self.root / 'media/event.jpg')
         Image.new('RGB', (900,900), 'blue').save(self.root / 'media/nature.jpg')
         self.site = {'name':'Photographer','email':'hello@example.com','headline':'People and nature','bio':'A biography','site_url':'https://example.com','instagram':'','facebook':'','hero_event_collection':'event','hero_nature_collection':'nature'}
@@ -40,7 +41,8 @@ class ContentBuildTests(unittest.TestCase):
         self.assertIn('id="people"',page)
         self.assertIn('id="nature"',page)
         self.assertIn('width="1200" height="800"',page)
-        self.assertIn('width="900" height="900"',page)
+        data=json.loads((self.root/'_site/assets/data.js').read_text().split('=',1)[1].rstrip(';'))
+        self.assertIn([900,900],data['sizes'].values())
     def test_draft_content_and_unreferenced_uploads_are_not_published(self):
         self.write('content/stories/private-draft.json',{'title':'DO_NOT_PUBLISH','published':False,'body':'PRIVATE_DRAFT'})
         Image.new('RGB',(50,50)).save(self.root/'media/unreferenced.jpg')
@@ -56,7 +58,53 @@ class ContentBuildTests(unittest.TestCase):
         story=(self.root/'_site/stories/encounter/index.html').read_text()
         self.assertIn('&lt;script&gt;',story)
         self.assertNotIn('<script>alert',story)
-        self.assertIn('stories/encounter/',(self.root/'_site/index.html').read_text())
+        self.assertIn('stories/encounter/',(self.root/'_site/assets/data.js').read_text())
+    def test_complete_archive_and_empty_stories_are_always_reachable(self):
+        self.run_build()
+        page=(self.root/'_site/index.html').read_text()
+        self.assertIn('href="work/"',page)
+        self.assertIn('href="stories/"',page)
+        self.assertTrue((self.root/'_site/work/index.html').exists())
+        stories=(self.root/'_site/stories/index.html').read_text()
+        self.assertIn('No stories have been published yet',stories)
+        self.assertNotIn('first-field-note',stories)
+
+    def test_slideshow_has_unique_images_and_both_disciplines(self):
+        self.run_build()
+        data=json.loads((self.root/'_site/assets/data.js').read_text().split('=',1)[1].rstrip(';'))
+        slides=data['slides']
+        self.assertEqual({slide['kind'] for slide in slides},{'event','nature'})
+        self.assertEqual(len(slides),len({slide['image'] for slide in slides}))
+        self.assertEqual(len(data['albums']['All']['all']),2)
+
+    def test_published_story_does_not_repeat_cover(self):
+        self.write('content/stories/encounter.json',{'title':'Encounter','published':True,'cover':'/media/nature.jpg','body':'A field note.','photos':[{'image':'/media/nature.jpg','alt':'The same cover'}]})
+        self.run_build()
+        story=(self.root/'_site/stories/encounter/index.html').read_text()
+        self.assertEqual(story.count('<img '),1)
+
+    def test_image_cache_does_not_reencode_unchanged_sources(self):
+        self.run_build()
+        before={p.name:p.stat().st_mtime_ns for p in (self.root/'.cache/images').glob('*.webp')}
+        self.run_build()
+        after={p.name:p.stat().st_mtime_ns for p in (self.root/'.cache/images').glob('*.webp')}
+        self.assertEqual(before,after)
+
+    def test_built_pages_have_no_unresolved_template_tokens(self):
+        self.run_build()
+        for page in (self.root/'_site').rglob('*.html'):
+            self.assertNotIn('{{',page.read_text())
+
+    def test_content_is_preserved_in_external_manifest_and_assets_are_versioned(self):
+        self.site['name']='A < B & C'
+        self.write('content/site.json',self.site)
+        self.run_build()
+        data=json.loads((self.root/'_site/assets/data.js').read_text().split('=',1)[1].rstrip(';'))
+        self.assertEqual(data['settings']['name'],'A < B & C')
+        self.assertIn('assets/gallery.js?v=',(self.root/'_site/index.html').read_text())
+        self.assertIn('../assets/site.css?v=',(self.root/'_site/work/index.html').read_text())
+        self.assertIn('<img ',(self.root/'_site/work/index.html').read_text())
+
     def test_outside_media_path_is_rejected(self):
         with self.assertRaises(ValueError):builder.safe_image_path('../secret.jpg')
         with self.assertRaises(ValueError):builder.safe_image_path('/etc/passwd')

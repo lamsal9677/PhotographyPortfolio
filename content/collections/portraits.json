@@ -1,34 +1,35 @@
 {
   "title": "Portraits & connections",
+  "published": true,
   "kind": "event",
   "category": "People & events",
-  "published": true,
   "order": 2,
   "description": "Individual portraits and moments shared. Photographs of people, as themselves.",
-  "cover": "/media/potrait-00.webp",
+  "cover": "/media/jared-potrait.jpg",
   "photos": [
     {
       "image": "/media/potrait-00.webp",
       "alt": "A couple smiling together in a green garden",
-      "caption": "",
+      "highlight": true
+    },
+    {
+      "image": "/media/jared-potrait.jpg",
+      "alt": "Cherry Blossom in DC",
       "highlight": true
     },
     {
       "image": "/media/potrait-09.webp",
       "alt": "A couple together beneath city lights",
-      "caption": "",
       "highlight": true
     },
     {
       "image": "/media/potrait-05.webp",
       "alt": "A man with a camera in a warmly lit interior",
-      "caption": "",
       "highlight": false
     },
     {
       "image": "/media/potrait-06.webp",
       "alt": "Outdoor portrait of a man wearing a light jacket",
-      "caption": "",
       "highlight": true
     }
   ]
